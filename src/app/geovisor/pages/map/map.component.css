@@ -188,15 +188,15 @@ body,
 
 /* Clase para el Footer Coordenadas*/
 footer {
-  position: fixed;
-  z-index: 600;
+  position: relative;
+  z-index: 300;
   background-color: #fff;
   display: grid;
   border-radius: 5px 5px 0px 0px;
   width: 50vw;
   min-width: 720px;
   height: 18px;
-  bottom: 10px;
+  bottom: 50px;
   left: 0;
   right: 0;
   margin: auto;
@@ -217,9 +217,223 @@ footer .datum {
 }
 
 footer label {
-  height: 20px;
+  height: 15px;
   color: black;
   font-size: 12px;
-  border-right: 1px solid while;
+  border-right: 1px solid black;
   padding-top: 3px;
+}
+@media (min-width: 480px) and (max-width: 767px) {
+  header {
+      display: none;
+  }
+
+  #map {
+      top: 0;
+      height: 100vh;
+  }
+
+  .brujula__norte {
+      display: none;
+  }
+
+  .menu__help {
+      display: none;
+  }
+
+  .control__scale {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100px;
+      font-size: 10px;
+      border-radius: 0;
+      height: 20px;
+  }
+
+  .control__scale input {
+      font-size: 10px;
+  }
+
+  .modal {
+      z-index: 800;
+      width: 80vw;
+      height: 70vh;
+      /* max-height: 70vh; */
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+  }
+
+  .content__info {
+      max-height: calc(70vh - 100px);
+  }
+
+  .content__metadata {
+      height: calc(70vh - 80px);
+      min-height: calc(70vh - 80px);
+      max-height: calc(70vh - 80px);
+  }
+
+  footer {
+      width: 60vw;
+      min-width: 60vw;
+      height: 34px;
+      grid-template-columns: 1fr 1.2fr 1fr;
+      grid-template-rows: repeat(2, 18px);
+      border-bottom: 1px solid var(--color-text);
+  }
+
+  footer .datum {
+      height: 15px;
+      padding-top: 4px;
+      border-radius: 0px;
+  }
+
+  footer label {
+      font-size: 10px;
+      height: 15px;
+      border-bottom: 1px solid var(--color-text);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+      overflow-y: hidden;
+  }
+
+  header {
+      top: 0;
+      position: fixed;
+      z-index: 9999;
+      display: block;
+      height: 40px;
+      /* background-image: url('../images/logo-s.svg'); */
+  }
+
+  /* header.header__pb {
+      background-image: url('../images/logo-s2.svg');
+  } */
+
+  .header__counter {
+      right: 5px;
+      top: 12px;
+      font-size: 12px;
+  }
+
+  .header__logo {
+      /* width: 124px; */
+      height: 40px;
+      margin-top: 0;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+
+  .header__logo>img {
+      /* max-width: 260px; */
+      max-width: 220px;
+      height: 30px;
+  }
+
+  #map {
+      height: calc(100vh - 40px);
+      top: 40px;
+  }
+
+  .brujula__norte {
+      display: none;
+  }
+
+  .menu__help {
+      display: none;
+  }
+
+  .options__help {
+      display: block;
+  }
+
+  footer {
+      width: 100vw;
+      min-width: 360px;
+      grid-template-columns: 1fr 1.2fr 1fr;
+      grid-template-rows: repeat(2, 18px);
+      border-bottom: 1px solid var(--color-text);
+      bottom: 18px;
+      position: fixed;
+  }
+
+  .modal__terms {
+      width: 80vw;
+      height: 70vh;
+      max-height: 70vh;
+      z-index: 100000;
+      overflow-y: auto;
+      border: 1px solid var(--color-subcategory);
+  }
+
+  .control__scale {
+      position: fixed;
+      bottom: 45px;
+      left: 0;
+      width: 110px;
+      border-radius: 0;
+      font-size: 12px;
+  }
+
+  .control__scale input {
+      font-size: 12px;
+  }
+
+  footer .datum {
+      height: 18px;
+      border-radius: 0px;
+  }
+
+  footer label {
+      height: 18px;
+      background-color: var(--color-claro);
+      border-top: 1px solid var(--color-text);
+      font-size: 10px;
+  }
+
+  .modal {
+      width: 90vw;
+      height: 80vh;
+      max-height: 80vh;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      border: 1px solid var(--color-subcategory);
+      z-index: 20000;
+      overflow-x: auto;
+  }
+
+  .content__info {
+      min-width: 300px;
+      max-height: calc(80vh - 100px);
+  }
+
+  .content__metadata {
+      overflow-x: auto;
+  }
+
+  .resizer {
+      display: none;
+  }
+
+  .toast__custom {
+      left: 5vw;
+      top: 90px;
+      height: 20px;
+      width: 90vw;
+      max-width: 90vw;
+      padding: 5px 0;
+      display: none;
+  }
 }

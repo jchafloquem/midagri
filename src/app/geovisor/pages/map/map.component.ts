@@ -5,6 +5,7 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
+
 //libreria de ArcGIS
 import AreaMeasurement2D from '@arcgis/core/widgets/AreaMeasurement2D.js';
 import BasemapGallery from '@arcgis/core/widgets/BasemapGallery.js';
