@@ -575,6 +575,9 @@ export default class MapComponent {
       expandTooltip: 'COORDENADAS',
       content: ccoordenadas,
     });
+
+
+
     view.ui.add(ccordenadasExpand, { position: 'top-right' });
     const toggle = new BasemapToggle({
       view: view, // view that provides access to the map's 'topo-vector' basemap
