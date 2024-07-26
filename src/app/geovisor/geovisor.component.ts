@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
-import { SidebarComponent } from "../shared/sidebar/sidebar.component";
+import {Component} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {NavbarComponent} from '../shared/navbar/navbar.component';
+import {FabContainerTopComponent} from './components/fab-container-top/fab-container-top.component';
+import {InfoCoordenadasComponent} from './components/info-coordenadas/info-coordenadas.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 
 @Component({
-  selector: 'app-geovisor',
-  standalone: true,
-  imports: [RouterModule, NavbarComponent, SidebarComponent],
-  templateUrl: './geovisor.component.html',
-  styleUrl: './geovisor.component.css'
+	selector: 'app-geovisor',
+	standalone: true,
+	imports: [RouterModule, NavbarComponent, SidebarComponent, FabContainerTopComponent, InfoCoordenadasComponent],
+	templateUrl: './geovisor.component.html',
+	styleUrl: './geovisor.component.scss',
 })
-export default class GeovisorComponent {
-
-}
+export default class GeovisorComponent {}
