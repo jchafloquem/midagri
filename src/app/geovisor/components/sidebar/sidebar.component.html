@@ -1,4 +1,6 @@
-<div class="absolute top-0 left-0 z-50 transition-opacity duration-300 h-full bg-white/50">
+<div
+	class="absolute top-1/2 -translate-y-1/2 z-50 transition-opacity duration-300 h-[300px] bg-white/50 menu__container"
+	[ngClass]="toogleMenu ? 'menu__container--open' : 'menu__container'">
 	<div class="z-20 flex flex-row flex-nowrap h-full">
 		<!-- *Menu Principal -->
 		<div class="min-w-[80px] bg-white flex flex-col items-center gap-2 py-2 shadow-xl z-10 cursor-pointer">
@@ -34,8 +36,8 @@
 			*ngIf="subMenu === 'capas'"
 			class="w-full bg-white transition-all duration-500 shadow-xl overflow-y-auto flex flex-col items-center">
 			<div class="bg-red-500 w-full h-9 flex flex-row justify-between items-center p-2">
-				<div class="p-2 text-white">Capas Disponibles</div>
-				<mat-icon class="text-white cursor-pointer">close</mat-icon>
+				<div class="p-2 text-white">Capas Disponibles {{ toogleMenu }}</div>
+				<mat-icon class="text-white cursor-pointer" (click)="clickToogleMenu()">close</mat-icon>
 			</div>
 			<div class="flex flex-col justify-center items-center w-full">
 				<div

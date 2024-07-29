@@ -36,3 +36,21 @@
 		transform: rotate(360deg);
 	}
 }
+.menu__container {
+	left: -288px !important;
+	border-radius: 0 8px 8px 0;
+	transition: all 0.5s ease 0s;
+	-webkit-transition: all 0.5s ease 0s;
+	-moz-transition: all 0.5s ease 0s;
+	-ms-transition: all 0.5s ease 0s;
+	-o-transition: all 0.5s ease 0s;
+}
+.menu__container--open {
+	width: 350px !important;
+	left: 0px !important;
+	transition: all 0.5s ease 0s;
+	-webkit-transition: all 0.5s ease 0s;
+	-moz-transition: all 0.5s ease 0s;
+	-ms-transition: all 0.5s ease 0s;
+	-o-transition: all 0.5s ease 0s;
+}
