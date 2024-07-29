@@ -1,439 +1,359 @@
-@import "https://js.arcgis.com/4.30/esri/themes/light/main.css";
+@import 'https://js.arcgis.com/4.30/esri/themes/light/main.css';
 
 .esri-view {
-  padding-top: 62px;
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  z-index: -10;
+	padding-top: 62px;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	z-index: -10;
 }
 
 #mapViewNode {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  z-index: -1;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	z-index: -1;
 }
 
 html,
 body,
 #sceneDiv {
-  position: relative;
-  /* height: 100%; */
-  /* width: 100%; */
-  margin: 0;
-  padding: 0;
+	position: relative;
+	/* height: 100%; */
+	/* width: 100%; */
+	margin: 0;
+	padding: 0;
 }
 
 .panel-side h3 {
-  padding: 0 20px;
-  margin: 20px 0;
+	padding: 0 20px;
+	margin: 20px 0;
 }
 
 .panel-side ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .panel-side li {
-  list-style: none;
-  padding: 10px 20px;
+	list-style: none;
+	padding: 10px 20px;
 }
 
 .panel-result {
-  cursor: pointer;
-  margin: 2px 0;
-  background-color: rgba(0, 0, 0, 0.3);
+	cursor: pointer;
+	margin: 2px 0;
+	background-color: rgba(0, 0, 0, 0.3);
 }
 
 .panel-result:hover,
 .panel-result:focus {
-  color: orange;
-  background-color: rgba(0, 0, 0, 0.75);
+	color: orange;
+	background-color: rgba(0, 0, 0, 0.75);
 }
 
 /* new */
 .panel-side2.hidden-side2 {
-  left: -300px;
+	left: -300px;
 }
 
 .panel-close.panel-close-side2 {
-  left: 300px;
+	left: 300px;
 }
 
 .panel-close {
-  border: 1px solid #dee2e6;
-  cursor: pointer;
-  box-sizing: border-box;
-  padding: 2px;
-  padding-top: 4px;
-  box-sizing: border-box;
-  text-align: center;
-  width: 30px;
-  height: 30px;
-  /*height: 100%;
+	border: 1px solid #dee2e6;
+	cursor: pointer;
+	box-sizing: border-box;
+	padding: 2px;
+	padding-top: 4px;
+	box-sizing: border-box;
+	text-align: center;
+	width: 30px;
+	height: 30px;
+	/*height: 100%;
 	*/
-  left: 0;
-  position: absolute;
-  top: 70px;
-  color: #000000;
-  background-color: #f8f9fa;
-  z-index: 1;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  transition: left 0.3s ease-out;
-  -webkit-transition: left 0.3s ease-out;
-  -moz-transition: left 0.3s ease-out;
-  -ms-transition: left 0.3s ease-out;
-  -o-transition: left 0.3s ease-out;
+	left: 0;
+	position: absolute;
+	top: 70px;
+	color: #000000;
+	background-color: #f8f9fa;
+	z-index: 1;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	transition: left 0.3s ease-out;
+	-webkit-transition: left 0.3s ease-out;
+	-moz-transition: left 0.3s ease-out;
+	-ms-transition: left 0.3s ease-out;
+	-o-transition: left 0.3s ease-out;
 }
 
 .panel-close:hover {
-  border: 1px solid #71a9d9;
-  background-color: #e5f3ff;
+	border: 1px solid #71a9d9;
+	background-color: #e5f3ff;
 }
 
 .panel-side2 {
-  box-sizing: border-box;
-  padding: 2px;
-  margin-left: 0px;
-  box-sizing: border-box;
-  width: 300px;
-  height: calc(100% - 56px);
-  /*height: 100%;
+	box-sizing: border-box;
+	padding: 2px;
+	margin-left: 0px;
+	box-sizing: border-box;
+	width: 300px;
+	height: calc(100% - 56px);
+	/*height: 100%;
 	*/
-  position: absolute;
-  top: 65px;
-  left: 0;
-  color: #fff;
-  background-color: rgb(255, 255, 255);
-  overflow: initial;
-  z-index: 0;
-  transition: left 0.3s ease-out;
-  -webkit-transition: left 0.3s ease-out;
-  -moz-transition: left 0.3s ease-out;
-  -ms-transition: left 0.3s ease-out;
-  -o-transition: left 0.3s ease-out;
+	position: absolute;
+	top: 65px;
+	left: 0;
+	color: #fff;
+	background-color: rgb(255, 255, 255);
+	overflow: initial;
+	z-index: 0;
+	transition: left 0.3s ease-out;
+	-webkit-transition: left 0.3s ease-out;
+	-moz-transition: left 0.3s ease-out;
+	-ms-transition: left 0.3s ease-out;
+	-o-transition: left 0.3s ease-out;
 }
 
 .panel-side23 {
-  height: 100%;
-  overflow-y: auto;
+	height: 100%;
+	overflow-y: auto;
 }
 
 .panel-side2 h3 {
-  padding: 0 20px;
-  margin: 20px 0;
+	padding: 0 20px;
+	margin: 20px 0;
 }
 
 .panel-side2 ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .panel-side2 li {
-  list-style: none;
-  padding: 10px 20px;
+	list-style: none;
+	padding: 10px 20px;
 }
 
 .panel-result2 {
-  border: 1px solid transparent;
-  box-sizing: border-box;
-  cursor: pointer;
-  padding: 2px 4px;
-  /* background-color: rgba(0, 0, 0, 0.3); */
+	border: 1px solid transparent;
+	box-sizing: border-box;
+	cursor: pointer;
+	padding: 2px 4px;
+	/* background-color: rgba(0, 0, 0, 0.3); */
 }
 
 .panel-result2:hover,
 .panel-result2:focus {
-  border: 1px solid #71a9d9;
-  background-color: #e5f3ff;
+	border: 1px solid #71a9d9;
+	background-color: #e5f3ff;
 }
 
 .panel-result2:target {
-  border: 1px solid #71a9d9;
-  background-color: #c7e5ff;
+	border: 1px solid #71a9d9;
+	background-color: #c7e5ff;
 }
 
 .textView {
-  font-size: small;
-  color: black;
+	font-size: small;
+	color: black;
 }
 
 .bottonCapa {
-  border: 1px solid transparent;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  padding: 4px;
-  align-items: center;
-  background: white;
-  cursor: pointer;
+	border: 1px solid transparent;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	padding: 4px;
+	align-items: center;
+	background: white;
+	cursor: pointer;
 }
 
 .bottonCapa:hover,
 .bottonCapa:focus {
-  border: 1px solid #71a9d9;
-  background-color: #e5f3ff;
+	border: 1px solid #71a9d9;
+	background-color: #e5f3ff;
 }
 
-/* Clase para el Footer Coordenadas*/
-footer {
-  position: relative;
-  z-index: 300;
-  background-color: #fff;
-  display: grid;
-  border-radius: 5px 5px 0px 0px;
-  width: 50vw;
-  min-width: 720px;
-  height: 18px;
-  bottom: 50px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1.2fr;
-  text-align: center;
-}
-
-footer .datum {
-  background-color: #fff;
-  color: black;
-  border-radius: 4px 0px 0px 0px;
-  font-size: 12px;
-  text-align: center;
-  cursor: pointer;
-  height: 20px;
-  margin: 0;
-  padding-top: 0px;
-}
-
-footer label {
-  height: 15px;
-  color: black;
-  font-size: 12px;
-  border-right: 1px solid black;
-  padding-top: 3px;
-}
 @media (min-width: 480px) and (max-width: 767px) {
-  header {
-      display: none;
-  }
+	header {
+		display: none;
+	}
 
-  #map {
-      top: 0;
-      height: 100vh;
-  }
+	#map {
+		top: 0;
+		height: 100vh;
+	}
 
-  .brujula__norte {
-      display: none;
-  }
+	.brujula__norte {
+		display: none;
+	}
 
-  .menu__help {
-      display: none;
-  }
+	.menu__help {
+		display: none;
+	}
 
-  .control__scale {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100px;
-      font-size: 10px;
-      border-radius: 0;
-      height: 20px;
-  }
+	.control__scale {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100px;
+		font-size: 10px;
+		border-radius: 0;
+		height: 20px;
+	}
 
-  .control__scale input {
-      font-size: 10px;
-  }
+	.control__scale input {
+		font-size: 10px;
+	}
 
-  .modal {
-      z-index: 800;
-      width: 80vw;
-      height: 70vh;
-      /* max-height: 70vh; */
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
-  }
+	.modal {
+		z-index: 800;
+		width: 80vw;
+		height: 70vh;
+		/* max-height: 70vh; */
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
 
-  .content__info {
-      max-height: calc(70vh - 100px);
-  }
+	.content__info {
+		max-height: calc(70vh - 100px);
+	}
 
-  .content__metadata {
-      height: calc(70vh - 80px);
-      min-height: calc(70vh - 80px);
-      max-height: calc(70vh - 80px);
-  }
-
-  footer {
-      width: 60vw;
-      min-width: 60vw;
-      height: 34px;
-      grid-template-columns: 1fr 1.2fr 1fr;
-      grid-template-rows: repeat(2, 18px);
-      border-bottom: 1px solid var(--color-text);
-  }
-
-  footer .datum {
-      height: 15px;
-      padding-top: 4px;
-      border-radius: 0px;
-  }
-
-  footer label {
-      font-size: 10px;
-      height: 15px;
-      border-bottom: 1px solid var(--color-text);
-  }
+	.content__metadata {
+		height: calc(70vh - 80px);
+		min-height: calc(70vh - 80px);
+		max-height: calc(70vh - 80px);
+	}
 }
 
 @media (max-width: 480px) {
-  body {
-      overflow-y: hidden;
-  }
+	body {
+		overflow-y: hidden;
+	}
 
-  header {
-      top: 0;
-      position: fixed;
-      z-index: 9999;
-      display: block;
-      height: 40px;
-      /* background-image: url('../images/logo-s.svg'); */
-  }
+	header {
+		top: 0;
+		position: fixed;
+		z-index: 9999;
+		display: block;
+		height: 40px;
+		/* background-image: url('../images/logo-s.svg'); */
+	}
 
-  /* header.header__pb {
+	/* header.header__pb {
       background-image: url('../images/logo-s2.svg');
   } */
 
-  .header__counter {
-      right: 5px;
-      top: 12px;
-      font-size: 12px;
-  }
+	.header__counter {
+		right: 5px;
+		top: 12px;
+		font-size: 12px;
+	}
 
-  .header__logo {
-      /* width: 124px; */
-      height: 40px;
-      margin-top: 0;
+	.header__logo {
+		/* width: 124px; */
+		height: 40px;
+		margin-top: 0;
 
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-  }
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
 
-  .header__logo>img {
-      /* max-width: 260px; */
-      max-width: 220px;
-      height: 30px;
-  }
+	.header__logo > img {
+		/* max-width: 260px; */
+		max-width: 220px;
+		height: 30px;
+	}
 
-  #map {
-      height: calc(100vh - 40px);
-      top: 40px;
-  }
+	#map {
+		height: calc(100vh - 40px);
+		top: 40px;
+	}
 
-  .brujula__norte {
-      display: none;
-  }
+	.brujula__norte {
+		display: none;
+	}
 
-  .menu__help {
-      display: none;
-  }
+	.menu__help {
+		display: none;
+	}
 
-  .options__help {
-      display: block;
-  }
+	.options__help {
+		display: block;
+	}
 
-  footer {
-      width: 100vw;
-      min-width: 360px;
-      grid-template-columns: 1fr 1.2fr 1fr;
-      grid-template-rows: repeat(2, 18px);
-      border-bottom: 1px solid var(--color-text);
-      bottom: 18px;
-      position: fixed;
-  }
+	.modal__terms {
+		width: 80vw;
+		height: 70vh;
+		max-height: 70vh;
+		z-index: 100000;
+		overflow-y: auto;
+		border: 1px solid var(--color-subcategory);
+	}
 
-  .modal__terms {
-      width: 80vw;
-      height: 70vh;
-      max-height: 70vh;
-      z-index: 100000;
-      overflow-y: auto;
-      border: 1px solid var(--color-subcategory);
-  }
+	.control__scale {
+		position: fixed;
+		bottom: 45px;
+		left: 0;
+		width: 110px;
+		border-radius: 0;
+		font-size: 12px;
+	}
 
-  .control__scale {
-      position: fixed;
-      bottom: 45px;
-      left: 0;
-      width: 110px;
-      border-radius: 0;
-      font-size: 12px;
-  }
+	.control__scale input {
+		font-size: 12px;
+	}
 
-  .control__scale input {
-      font-size: 12px;
-  }
+	.modal {
+		width: 90vw;
+		height: 80vh;
+		max-height: 80vh;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+		border: 1px solid var(--color-subcategory);
+		z-index: 20000;
+		overflow-x: auto;
+	}
 
-  footer .datum {
-      height: 18px;
-      border-radius: 0px;
-  }
+	.content__info {
+		min-width: 300px;
+		max-height: calc(80vh - 100px);
+	}
 
-  footer label {
-      height: 18px;
-      background-color: var(--color-claro);
-      border-top: 1px solid var(--color-text);
-      font-size: 10px;
-  }
+	.content__metadata {
+		overflow-x: auto;
+	}
 
-  .modal {
-      width: 90vw;
-      height: 80vh;
-      max-height: 80vh;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
-      border: 1px solid var(--color-subcategory);
-      z-index: 20000;
-      overflow-x: auto;
-  }
+	.resizer {
+		display: none;
+	}
 
-  .content__info {
-      min-width: 300px;
-      max-height: calc(80vh - 100px);
-  }
-
-  .content__metadata {
-      overflow-x: auto;
-  }
-
-  .resizer {
-      display: none;
-  }
-
-  .toast__custom {
-      left: 5vw;
-      top: 90px;
-      height: 20px;
-      width: 90vw;
-      max-width: 90vw;
-      padding: 5px 0;
-      display: none;
-  }
+	.toast__custom {
+		left: 5vw;
+		top: 90px;
+		height: 20px;
+		width: 90vw;
+		max-width: 90vw;
+		padding: 5px 0;
+		display: none;
+	}
 }

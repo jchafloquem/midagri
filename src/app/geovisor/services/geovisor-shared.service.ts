@@ -17,6 +17,10 @@ import Print from '@arcgis/core/widgets/Print.js';
 import ScaleBar from '@arcgis/core/widgets/ScaleBar.js';
 import Search from '@arcgis/core/widgets/Search.js';
 import Zoom from '@arcgis/core/widgets/Zoom.js';
+
+import * as projection from '@arcgis/core/geometry/projection';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import Point from '@arcgis/core/geometry/Point';
 interface LayerConfig {
 	title: string;
 	url: string;
@@ -147,7 +151,14 @@ export class GeovisorSharedService {
 	public searchTerm = '';
 	public filteredArray: any[] = [];
 	public controlCapas: any = null;
-	public coords = '';
+
+	// *footer coordenadas
+	public gcsLongitude = '--';
+	public gcsLatitude = '--';
+	public utmZone = '--';
+	public utmEast = '--';
+	public utmNorth = '--';
+	public scale = '--';
 
 	constructor() {}
 
@@ -184,6 +195,8 @@ export class GeovisorSharedService {
 			zoom: 6,
 			rotation: 0,
 			constraints: {
+				maxZoom: 23,
+				minZoom: 5,
 				snapToZoom: false,
 			},
 			padding: {top: 0},
@@ -191,7 +204,13 @@ export class GeovisorSharedService {
 				components: [],
 			}, //Altura del mapa
 		});
+		// Watch for changes to the zoom level
+		// Wait for the view to be ready before setting up the watch
 
+		// Set up the watch on zoom level only after the view is ready
+		view.watch('scale', (scale: any) => {
+			this.scale = this.formatScale(scale);
+		});
 		//Estructura de arreglo para realizar busquedas
 		const arregloCapasBusqueda = [
 			// {
@@ -357,7 +376,7 @@ export class GeovisorSharedService {
 
 		view.on('pointer-move', (event: {x: any; y: any}) => {
 			const point = this.view.toMap({x: event.x, y: event.y});
-			this.coords = `Lat: ${point.latitude.toFixed(4)}, Lon: ${point.longitude.toFixed(4)}`;
+			this.updateCoordinates(point.latitude, point.longitude);
 		});
 
 		//Procedimiento Slider de busqueda de Centro Poblado de capital de distrito
@@ -494,5 +513,37 @@ export class GeovisorSharedService {
 		this.filteredArray = this.lis.filter((item) =>
 			item.attributes.nombre_centropoblado.toLowerCase().includes(this.searchTerm.toLowerCase())
 		);
+	}
+
+	updateCoordinates(lat: number, lon: number): void {
+		this.gcsLongitude = lon.toFixed(5);
+		this.gcsLatitude = lat.toFixed(5);
+		// Calculate UTM Zone
+		const zoneNumber = Math.floor((lon + 180) / 6) + 1;
+		const utmBand = this.getUtmBand(lat);
+		this.utmZone = `${zoneNumber} ${utmBand}`;
+
+		// Convert to UTM
+		const pointUTM = new Point({
+			latitude: lat,
+			longitude: lon,
+			spatialReference: SpatialReference.WGS84,
+		});
+		const utmWkid = lat >= 0 ? 32600 + zoneNumber : 32700 + zoneNumber; // WKID for UTM zone
+		const projected = projection.project(pointUTM, new SpatialReference({wkid: utmWkid})) as Point;
+
+		const utmPoint = projected as Point;
+		this.utmEast = `${utmPoint.x.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} m`;
+		this.utmNorth = `${utmPoint.y.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} m`;
+		// Calculate UTM Zone
+	}
+
+	getUtmBand(latitude: number): string {
+		const bands = 'CDEFGHJKLMNPQRSTUVWX'; // Bands from 80S to 84N
+		const index = Math.floor((latitude + 80) / 8);
+		return bands.charAt(index);
+	}
+	formatScale(scale: number): string {
+		return scale.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
 	}
 }

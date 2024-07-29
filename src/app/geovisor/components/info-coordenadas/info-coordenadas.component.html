@@ -1,7 +1,29 @@
-@if (_geovisorSharedService.coords) {
-<div class="absolute bottom-16 left-1/2 -translate-x-1/2 z-50">
-	<div class="bg-white p-4 w-[320px] md:w-[400px] lg:w-[500px] xl:w-[600px] flex flex-col justify-center items-center">
-		<div>{{ _geovisorSharedService.coords }}</div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 z-50 w-max">
+	<div class="bg-white rounded-t-lg w-full grid grid-cols-2 m:grid-cols-3 lg:grid-cols-6 justify-center place-items-center text-[11px]">
+		<div
+			class="bg-[#333333] border-0 border-t border-l border-b border-solid border-[#333333] text-white w-full text-center rounded-tl-lg px-1">
+			DATUM WGS84
+		</div>
+		<div class="border-0 border-r border-b border-solid border-[#333333] w-full text-center px-1">
+			GCS Longitud: {{ _geovisorSharedService.gcsLongitude }}
+		</div>
+
+		<div class="border-0 border-r border-b border-solid border-[#333333] w-full text-center px-1">
+			Latitud: {{ _geovisorSharedService.gcsLatitude }}
+		</div>
+		<div class="border-0 border-r border-b border-solid border-[#333333] w-full text-center px-1">
+			UTM Zona: {{ _geovisorSharedService.utmZone }}
+		</div>
+		<div class="border-0 border-r border-b border-solid border-[#333333] w-full text-center px-1">
+			Este: {{ _geovisorSharedService.utmEast }}
+		</div>
+		<div class="border-0 border-r border-b border-solid border-[#333333] w-full text-center px-1">
+			Norte: {{ _geovisorSharedService.utmNorth }}
+		</div>
 	</div>
 </div>
-}
+<div class="absolute bottom-0 right-1 z-50 w-fit">
+	<div class="bg-white rounded-t-lg w-full grid grid-cols-1 justify-center place-items-center text-[11px]">
+		<div class="w-full text-center px-1">1: {{ _geovisorSharedService.scale }}</div>
+	</div>
+</div>
