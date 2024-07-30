@@ -11,7 +11,7 @@ import {GeovisorSharedService} from '../../services/geovisor-shared.service';
 })
 export class FabContainerTopComponent {
 	public _geovisorSharedService = inject(GeovisorSharedService);
-	public mapaBaseView = false;
+	public mapaBaseView = true;
 	mapabase(base: string): void {
 		this._geovisorSharedService.mapa.basemap = Basemap.fromId(base);
 	}
