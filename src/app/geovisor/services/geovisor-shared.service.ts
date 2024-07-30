@@ -41,7 +41,7 @@ interface LayerConfig {
 const fillSymbolDepartamento = new SimpleFillSymbol({
 	color: [255, 255, 255, 0], // Color rojo con 50% de opacidad
 	outline: {
-		color: [135, 206, 250],
+		color: [0, 0, 0],
 		width: 2,
 	}
 });
@@ -67,8 +67,8 @@ const labelClassDepartamento = new LabelClass({
 	labelExpressionInfo: { expression: "$feature.NOMBDEP" },
 	symbol: {
 		type: "text",
-		color: [135, 206, 250],
-		haloColor: "black",
+		color: "black",
+		haloColor: "white",
 		haloSize: "1px",
 		font: {
 			size: 10,
@@ -353,8 +353,8 @@ export class GeovisorSharedService {
 		const view = new MapView({
 			container: container,
 			map: this.mapa,
-			center: [-75.015152, -9.189967],
-			zoom: 6,
+			center: [-75.015152, -10.189967],
+			zoom: 5.95,
 			rotation: 0,
 			constraints: {
 				maxZoom: 23,
@@ -492,10 +492,10 @@ export class GeovisorSharedService {
 		});
 		view.ui.add(areaExpand, { position: 'top-right' });
 		//Funcion de localizar
-		const locateBtn = new Locate({
-			view: view,
-		});
-		view.ui.add(locateBtn, { position: 'top-trailing' });
+		// const locateBtn = new Locate({
+		// 	view: view,
+		// });
+		// view.ui.add(locateBtn, { position: 'top-trailing' });
 		//Funcion de escala
 		// const scaleBarra = new ScaleBar({
 		// 	view: view,
@@ -506,13 +506,13 @@ export class GeovisorSharedService {
 		const ccoordenadas = new CoordinateConversion({
 			view: view,
 		});
-		const ccordenadasExpand = new Expand({
-			//expandIconClass: 'esri-icon-radio-checked',
-			view: view,
-			expandTooltip: 'Coordenadas',
-			content: ccoordenadas,
-		});
-		view.ui.add(ccordenadasExpand, { position: 'top-right' });
+		// const ccordenadasExpand = new Expand({
+		// 	//expandIconClass: 'esri-icon-radio-checked',
+		// 	view: view,
+		// 	expandTooltip: 'Coordenadas',
+		// 	content: ccoordenadas,
+		// });
+		// view.ui.add(ccordenadasExpand, { position: 'top-right' });
 
 		// const toggle = new BasemapToggle({
 		// 	view: view, // view that provides access to the map's 'topo-vector' basemap
