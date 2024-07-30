@@ -1,4 +1,5 @@
 import { ElementRef, Injectable } from '@angular/core';
+//Libreria de ArcGIS 4.30
 import AreaMeasurement2D from '@arcgis/core/widgets/AreaMeasurement2D.js';
 import BasemapGallery from '@arcgis/core/widgets/BasemapGallery.js';
 import CoordinateConversion from '@arcgis/core/widgets/CoordinateConversion.js';
@@ -15,9 +16,9 @@ import Map from '@arcgis/core/Map.js';
 import MapView from '@arcgis/core/views/MapView.js';
 import PopupTemplate from '@arcgis/core/PopupTemplate.js';
 import Print from '@arcgis/core/widgets/Print.js';
-import ScaleBar from '@arcgis/core/widgets/ScaleBar.js';
 import Search from '@arcgis/core/widgets/Search.js';
-import TextSymbol from "@arcgis/core/symbols/TextSymbol.js";
+import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol.js";
+import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer.js";
 import Zoom from '@arcgis/core/widgets/Zoom.js';
 
 import * as projection from '@arcgis/core/geometry/projection';
@@ -32,7 +33,21 @@ interface LayerConfig {
 	labelingInfo?: any;
 	visible: boolean;
 	outFields?: string[];
+	renderer?: any;
+	maxScale?: number;
+	minScale?: number;
 }
+//Personalizacion de la capa Departamentos
+const fillSymbolDepartamento = new SimpleFillSymbol({
+	color: [255, 255, 255, 0], // Color rojo con 50% de opacidad
+	outline: {
+		color: [135, 206, 250],
+		width: 2,
+	}
+});
+const rendererDepartamento = new SimpleRenderer({
+	symbol: fillSymbolDepartamento
+})
 const popuTemplateDepartamento = new PopupTemplate({
 	title: '{NOMBDEP}',
 	content: [
@@ -44,35 +59,117 @@ const popuTemplateDepartamento = new PopupTemplate({
 					label: "Codigo",
 					visible: true
 				},
-				{
-					fieldName: "SHAPE.AREA",
-					label: "Area",
-					visible: true
-				}
 			]
 		}
 	],
 });
-
-const labelClass = new LabelClass({
-	labelExpressionInfo: { expression: "$feature.NOMBDEP" }, // Cambia "Name" al campo que deseas etiquetar
+const labelClassDepartamento = new LabelClass({
+	labelExpressionInfo: { expression: "$feature.NOMBDEP" },
 	symbol: {
-			type: "text",  // Autodetección del tipo de símbolo basado en los valores por defecto
-			color: "black",
-			haloColor: "white",
-			haloSize: 1,
-			font: {
-					size: 12,
-					family: "sans-serif",
-					weight: "bold"
-			}
+		type: "text",
+		color: [135, 206, 250],
+		haloColor: "black",
+		haloSize: "1px",
+		font: {
+			size: 10,
+			family: "sans-serif",
+			weight: "bold"
+		}
 	},
-	labelPlacement: "above-center", // Opciones incluyen "center", "above-center", "below-center", etc.
+	labelPlacement: "always-horizontal", // Opciones incluyen "center", "above-center", "below-center", etc.
 	minScale: 0,
 	maxScale: 0
 });
 
+//Personalizacion de la capa Provincia
+const fillSymbolProvincia = new SimpleFillSymbol({
+	color: [0, 0, 0, 0], // Color rojo con 50% de opacidad
+	outline: {
+		color: [0, 255, 0],
+		width: 2
+	},
 
+});
+const rendererProvincia = new SimpleRenderer({
+	symbol: fillSymbolProvincia
+});
+const popuTemplateProvincia = new PopupTemplate({
+	title: '{NOMBPROV}',
+	content: [
+		{
+			type: "fields",
+			fieldInfos: [
+				{
+					fieldName: "CODPROV",
+					label: "Codigo",
+					visible: true
+				},
+			]
+		}
+	],
+});
+const labelClassProvincia = new LabelClass({
+	labelExpressionInfo: { expression: "$feature.NOMBPROV" },
+	symbol: {
+		type: "text",
+		color: [0, 255, 0],
+		haloColor: "black",
+		haloSize: "1px",
+		font: {
+			size: 10,
+			family: "sans-serif",
+			weight: "bold"
+		}
+	},
+	labelPlacement: "always-horizontal", // Opciones incluyen "center", "above-center", "below-center", etc.
+	minScale: 0,
+	maxScale: 0
+});
+
+//Personalizacion de la capa Distrito
+const fillSymbolDistrito = new SimpleFillSymbol({
+	color: [0, 0, 0, 0], // Color rojo con 50% de opacidad
+	outline: {
+		color: [255, 0, 0],
+		width: 2
+	},
+
+});
+const rendererDistrito = new SimpleRenderer({
+	symbol: fillSymbolDistrito
+});
+const popuTemplateDistrito = new PopupTemplate({
+	title: '{NOMBDIST}',
+	content: [
+		{
+			type: "fields",
+			fieldInfos: [
+				{
+					fieldName: "CODDIST",
+					label: "Codigo",
+					visible: true
+				},
+			]
+		}
+	],
+});
+const labelClassDistrito = new LabelClass({
+	labelExpressionInfo: { expression: "$feature.NOMBDIST" },
+	symbol: {
+		type: "text",
+		color: "red",
+		haloColor: "white",
+		haloSize: "1px",
+		font: {
+			size: 10,
+			family: "sans-serif",
+			weight: "bold"
+		}
+	},
+	labelPlacement: "always-horizontal",
+	minScale: 0,
+	maxScale: 0
+});
 
 @Injectable({
 	providedIn: 'root',
@@ -87,7 +184,6 @@ export class GeovisorSharedService {
 			provincias: 'Limites_Censales/MapServer/1',
 			distritos: 'Limites_Censales/MapServer/2',
 		},
-
 		agroideas: 'AGROIDEAS/MapServer/0',
 		ppa: 'https://winlmprap09.midagri.gob.pe/winlmprap14/rest/services/ConPuchePeru/ppa/MapServer/0',
 		psi: 'PSI/MapServer/0',
@@ -99,29 +195,32 @@ export class GeovisorSharedService {
 		agrorural: 'AGRORURAL/MapServer/',
 	};
 
-
 	public layers: LayerConfig[] = [
 		//*Servicios de capas base
-
 		{
 			title: 'Limite de departamentos',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.departamentos}`,
-			visible: true,
+			labelingInfo: [labelClassDepartamento],
 			popupTemplate: popuTemplateDepartamento,
-			labelingInfo:[labelClass]
+			renderer: rendererDepartamento,
+			visible: true,
 		},
-
 		{
 			title: 'Limite de provincias',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.provincias}`,
+			labelingInfo: [labelClassProvincia],
+			popupTemplate: popuTemplateProvincia,
+			renderer: rendererProvincia,
 			visible: true,
-			popupTemplate: undefined,
+
 		},
 		{
 			title: 'Limite de distritos',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.distritos}`,
+			labelingInfo: [labelClassDistrito],
+			popupTemplate: popuTemplateDistrito,
+			renderer: rendererDistrito,
 			visible: true,
-			popupTemplate: undefined,
 		},
 		//*Servicios de capas de informacion
 		{
@@ -130,7 +229,12 @@ export class GeovisorSharedService {
 			visible: false,
 			popupTemplate: undefined,
 		},
-		{ title: 'Con Punche Perú', url: `${this.layerUrls.ppa}`, visible: false, popupTemplate: undefined },
+		{
+			title: 'Con Punche Perú',
+			url: `${this.layerUrls.ppa}`,
+			visible: true,
+			popupTemplate: undefined
+		},
 		{
 			title: 'Proyecto de Riego Tecnificado',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.psi}`,
@@ -167,7 +271,7 @@ export class GeovisorSharedService {
 		{
 			title: 'Escenario déficit hídrico',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.odngrd}0`,
-			visible: false,
+			visible: true,
 			popupTemplate: undefined,
 		},
 		{
@@ -221,16 +325,22 @@ export class GeovisorSharedService {
 					url: layerConfig.url,
 					title: layerConfig.title,
 					visible: layerConfig.visible,
-					labelingInfo:layerConfig.labelingInfo,
+					labelingInfo: layerConfig.labelingInfo,
+					renderer: layerConfig.renderer,
+					maxScale: layerConfig.maxScale,
+					minScale: layerConfig.minScale,
 				});
 			} else {
 				featureLayer = new FeatureLayer({
 					url: layerConfig.url,
 					title: layerConfig.title,
 					popupTemplate: layerConfig.popupTemplate,
-					labelingInfo:layerConfig.labelingInfo,
+					labelingInfo: layerConfig.labelingInfo,
 					outFields: layerConfig.outFields,
 					visible: layerConfig.visible,
+					renderer: layerConfig.renderer,
+					maxScale: layerConfig.maxScale,
+					minScale: layerConfig.minScale,
 				});
 			}
 
