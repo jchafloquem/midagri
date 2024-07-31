@@ -1,64 +1,25 @@
 <div
-	class="absolute top-1/2 -translate-y-1/2 z-50 transition-opacity duration-300 h-[300px] bg-white/50 menu__container"
-	[ngClass]="toogleMenu ? 'menu__container--open' : 'menu__container'">
-	<div class="z-20 flex flex-row flex-nowrap h-full">
-		<!-- *Menu Principal -->
-		<div class="min-w-[80px] bg-white flex flex-col items-center gap-2 py-2 shadow-xl z-10 cursor-pointer">
-			<div class="w-14 h-14 cursor-pointer">
-				<img src="assets/images/midagri.png" alt="" />
-			</div>
-			<div
-				class="w-14 h-14 relative rounded-full border border-solid border-[#e0e0e0] flex justify-center items-center cursor-pointer"
-				[ngClass]="{'active-left-panel': subMenu === 'capas'}"
-				id="left-panel">
-				<mat-icon
-					class="material-icons-round text-gray-400 flex items-center justify-center"
-					[ngClass]="{'text-red-500': subMenu === 'capas'}">
-					layers
-				</mat-icon>
-			</div>
-			<div
-				class="w-14 h-14 relative rounded-full border border-solid border-[#e0e0e0] flex justify-center items-center cursor-pointer"
-				[ngClass]="{'active-left-panel': subMenu === 'proyectos'}"
-				id="left-panel">
-				<mat-icon
-					class="material-icons-round text-gray-400 flex items-center justify-center"
-					[ngClass]="{'text-red-500': subMenu === 'proyectos'}">
-					grid_view
-				</mat-icon>
-			</div>
-			<div></div>
-		</div>
-		<!-- *Menu Secundario -->
-		<!-- #capas -->
-		<!-- [style.opacity]="_portalService.menu ? '1' : '0'" [style.display]="_portalService.menu ? 'block' : 'none'" -->
-		<div
-			*ngIf="subMenu === 'capas'"
-			class="w-full bg-white transition-all duration-500 shadow-xl overflow-y-auto flex flex-col items-center">
-			<div class="bg-red-500 w-full h-9 flex flex-row justify-between items-center p-2">
-				<div class="p-2 text-white">Capas Disponibles {{ toogleMenu }}</div>
-				<mat-icon class="text-white cursor-pointer" (click)="clickToogleMenu()">close</mat-icon>
-			</div>
-			<div class="flex flex-col justify-center items-center w-full">
-				<div
-					class="flex flex-row h-14 w-full bg-white items-center justify-between p-2 cursor-pointer border-0 border-solid border-gray-400/20 border-b">
-					<div>nombre</div>
-					<div>
-						<mat-icon class="">expand_more</mat-icon>
-					</div>
-				</div>
-				<ng-container>ddddddd</ng-container>
-			</div>
-		</div>
-		<!-- #proyectos -->
-		<div
-			*ngIf="subMenu === 'proyectos'"
-			class="w-full bg-white transition-all duration-500 shadow-xl overflow-y-auto flex flex-col items-center gap-2">
-			<div class="bg-red-500 w-full h-9 flex flex-row justify-between items-center p-2">
-				<div class="p-2 text-white">Proyecto</div>
-				<mat-icon class="material-icons-round text-white cursor-pointer">close</mat-icon>
-			</div>
-			<div></div>
-		</div>
+	class="absolute top-1/2 -translate-y-1/2 z-50 h-[300px] w-[320px] bg-white menu__container flex flex-row"
+	[ngClass]="{'menu__container--open': toogleMenu}">
+	<div class="w-[272px]">
+		<button (click)="toggleLayer('Limite de departamentos')">Toggle Limite de departamentos</button>
+		<button (click)="toggleLayer('Limite de provincias')">Toggle Limite de provincias</button>
+		<button (click)="toggleLayer('Limite de distritos')">Toggle Limite de distritos</button>
+		<button (click)="toggleLayer('Con Punche Perú')">Con Punche Perú</button>
+		<button (click)="toggleLayer('Cobertizos')">Cobertizos</button>
+		<button (click)="toggleLayer('Pastos cultivados')">Pastos cultivados</button>
+	</div>
+	<div class="w-[48px] flex flex-col items-start">
+		<button mat-button color="primary">Primary</button>
+		<button mat-raised-button class="" color="primary">Primary</button>
+		<button mat-icon-button class="" color="primary" (click)="clickToogleMenu()">
+			<mat-icon class="material-icons-round">chevron_right</mat-icon>
+		</button>
+		<button mat-icon-button class="" color="primary" (click)="clickToogleMenu()">
+			<mat-icon class="material-icons-round">chevron_right</mat-icon>
+		</button>
+		<button mat-fab class="" color="primary">
+			<mat-icon class="material-icons-round">chevron_right</mat-icon>
+		</button>
 	</div>
 </div>
