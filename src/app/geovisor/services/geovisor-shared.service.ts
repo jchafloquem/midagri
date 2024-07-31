@@ -1,4 +1,4 @@
-import { ElementRef, Injectable } from '@angular/core';
+import {ElementRef, Injectable} from '@angular/core';
 //Libreria de ArcGIS 4.30
 import AreaMeasurement2D from '@arcgis/core/widgets/AreaMeasurement2D.js';
 import BasemapGallery from '@arcgis/core/widgets/BasemapGallery.js';
@@ -8,7 +8,7 @@ import Expand from '@arcgis/core/widgets/Expand.js';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer.js';
 import Fullscreen from '@arcgis/core/widgets/Fullscreen.js';
 import Home from '@arcgis/core/widgets/Home.js';
-import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
+import LabelClass from '@arcgis/core/layers/support/LabelClass.js';
 import LayerList from '@arcgis/core/widgets/LayerList.js';
 import Legend from '@arcgis/core/widgets/Legend.js';
 import Locate from '@arcgis/core/widgets/Locate.js';
@@ -17,14 +17,13 @@ import MapView from '@arcgis/core/views/MapView.js';
 import PopupTemplate from '@arcgis/core/PopupTemplate.js';
 import Print from '@arcgis/core/widgets/Print.js';
 import Search from '@arcgis/core/widgets/Search.js';
-import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol.js";
-import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer.js";
+import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
+import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
 import Zoom from '@arcgis/core/widgets/Zoom.js';
 
 import * as projection from '@arcgis/core/geometry/projection';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import Point from '@arcgis/core/geometry/Point';
-
 
 interface LayerConfig {
 	title: string;
@@ -43,42 +42,56 @@ const fillSymbolDepartamento = new SimpleFillSymbol({
 	outline: {
 		color: [0, 0, 0],
 		width: 2,
-	}
+	},
 });
 const rendererDepartamento = new SimpleRenderer({
-	symbol: fillSymbolDepartamento
-})
+	symbol: fillSymbolDepartamento,
+});
 const popuTemplateDepartamento = new PopupTemplate({
 	title: '{NOMBDEP}',
 	content: [
 		{
-			type: "fields",
+			type: 'fields',
 			fieldInfos: [
 				{
-					fieldName: "CODDEP",
-					label: "Codigo",
-					visible: true
+					fieldName: 'CODDEP',
+					label: 'Codigo',
+					visible: true,
 				},
-			]
-		}
+			],
+		},
+	],
+});
+const popuTemplateDepartamentoppa = new PopupTemplate({
+	title: 'Con Punche Perú',
+	content: [
+		{
+			type: 'fields',
+			fieldInfos: [
+				{fieldName: 'OBJECTID', label: 'OBJECTID', visible: true},
+				{fieldName: 'IDE_PERSONA', label: 'IDE_PERSONA', visible: true},
+				{fieldName: 'IDE_ACTIV_PARCELA', label: 'IDE_ACTIV_PARCELA', visible: true},
+				{fieldName: 'SHAPE', label: 'SHAPE', visible: true},
+			],
+		},
 	],
 });
 const labelClassDepartamento = new LabelClass({
-	labelExpressionInfo: { expression: "$feature.NOMBDEP" },
+	labelExpressionInfo: {expression: '$feature.NOMBDEP'},
 	symbol: {
-		type: "text",
-		color: "black",
-		haloColor: "white",
-		haloSize: "1px",
+		type: 'text',
+		color: 'black',
+		haloColor: 'white',
+		haloSize: '1px',
 		font: {
 			size: 10,
-			family: "sans-serif",
-			weight: "bold"
-		}
+			family: 'sans-serif',
+			weight: 'bold',
+		},
 	},
-	labelPlacement: "always-horizontal", // Opciones incluyen "center", "above-center", "below-center", etc.
+	labelPlacement: 'always-horizontal', // Opciones incluyen "center", "above-center", "below-center", etc.
 	minScale: 0,
-	maxScale: 0
+	maxScale: 0,
 });
 
 //Personalizacion de la capa Provincia
@@ -86,44 +99,43 @@ const fillSymbolProvincia = new SimpleFillSymbol({
 	color: [0, 0, 0, 0], // Color rojo con 50% de opacidad
 	outline: {
 		color: [0, 255, 0],
-		width: 2
+		width: 2,
 	},
-
 });
 const rendererProvincia = new SimpleRenderer({
-	symbol: fillSymbolProvincia
+	symbol: fillSymbolProvincia,
 });
 const popuTemplateProvincia = new PopupTemplate({
 	title: '{NOMBPROV}',
 	content: [
 		{
-			type: "fields",
+			type: 'fields',
 			fieldInfos: [
 				{
-					fieldName: "CODPROV",
-					label: "Codigo",
-					visible: true
+					fieldName: 'CODPROV',
+					label: 'Codigo',
+					visible: true,
 				},
-			]
-		}
+			],
+		},
 	],
 });
 const labelClassProvincia = new LabelClass({
-	labelExpressionInfo: { expression: "$feature.NOMBPROV" },
+	labelExpressionInfo: {expression: '$feature.NOMBPROV'},
 	symbol: {
-		type: "text",
+		type: 'text',
 		color: [0, 255, 0],
-		haloColor: "black",
-		haloSize: "1px",
+		haloColor: 'black',
+		haloSize: '1px',
 		font: {
 			size: 10,
-			family: "sans-serif",
-			weight: "bold"
-		}
+			family: 'sans-serif',
+			weight: 'bold',
+		},
 	},
-	labelPlacement: "always-horizontal", // Opciones incluyen "center", "above-center", "below-center", etc.
+	labelPlacement: 'always-horizontal', // Opciones incluyen "center", "above-center", "below-center", etc.
 	minScale: 0,
-	maxScale: 0
+	maxScale: 0,
 });
 
 //Personalizacion de la capa Distrito
@@ -131,52 +143,79 @@ const fillSymbolDistrito = new SimpleFillSymbol({
 	color: [0, 0, 0, 0], // Color rojo con 50% de opacidad
 	outline: {
 		color: [255, 0, 0],
-		width: 2
+		width: 2,
 	},
+});
 
-});
 const rendererDistrito = new SimpleRenderer({
-	symbol: fillSymbolDistrito
+	symbol: fillSymbolDistrito,
 });
+
 const popuTemplateDistrito = new PopupTemplate({
 	title: '{NOMBDIST}',
 	content: [
 		{
-			type: "fields",
+			type: 'fields',
 			fieldInfos: [
 				{
-					fieldName: "CODDIST",
-					label: "Codigo",
-					visible: true
+					fieldName: 'CODDIST',
+					label: 'Codigo',
+					visible: true,
 				},
-			]
-		}
+			],
+		},
+	],
+});
+const popuTemplateDistritoss = new PopupTemplate({
+	title: 'Cobertizos',
+	content: [
+		{
+			type: 'fields',
+			fieldInfos: [
+				{fieldName: 'UIF', label: 'UIF', visible: true},
+				{fieldName: 'TXT_CENTRO_POBLADO', label: 'TXT_CENTRO_POBLADO', visible: true},
+				{fieldName: 'TXT_CUENCA', label: 'TXT_CUENCA', visible: true},
+				{fieldName: 'TXT_MICRO_CUENCA', label: 'TXT_MICRO_CUENCA', visible: true},
+				{fieldName: 'FEC_AÑO_FISCAL', label: 'FEC_AÑO_FISCAL', visible: true},
+				{fieldName: 'NUM_MONTO', label: 'NUM_MONTO', visible: true},
+				{fieldName: 'NUM_LATITUD', label: 'NUM_LATITUD', visible: true},
+				{fieldName: 'NUM_LONGITUD', label: 'NUM_LONGITUD'},
+				{fieldName: 'NUM_SUMOVHEMBRAS', label: 'NUM_SUMOVHEMBRAS', visible: true},
+				{fieldName: 'NUM_SUMOVMACHOS', label: 'NUM_SUMOVMACHOS', visible: true},
+				{fieldName: 'NUM_SUMOVTOTAL', label: 'NUM_SUMOVTOTAL', visible: true},
+				{fieldName: 'NUM_SUMOVMUERTOS', label: 'NUM_SUMOVMUERTOS', visible: true},
+				{fieldName: 'NUM_SUMALPHEMBRAS', label: 'NUM_SUMALPHEMBRAS', visible: true},
+				{fieldName: 'NUM_SUMALPMACHOS', label: 'NUM_SUMALPMACHOS', visible: true},
+				{fieldName: 'NUM_SUMALPTOTAL', label: 'NUM_SUMALPTOTAL', visible: true},
+				{fieldName: 'NUM_SUMALPMUERTOS', label: 'NUM_SUMALPMUERTOS', visible: true},
+				{fieldName: 'ESRI_OID', label: 'ESRI_OID', visible: true},
+			],
+		},
 	],
 });
 const labelClassDistrito = new LabelClass({
-	labelExpressionInfo: { expression: "$feature.NOMBDIST" },
+	labelExpressionInfo: {expression: '$feature.NOMBDIST'},
 	symbol: {
-		type: "text",
-		color: "red",
-		haloColor: "white",
-		haloSize: "1px",
+		type: 'text',
+		color: 'red',
+		haloColor: 'white',
+		haloSize: '1px',
 		font: {
 			size: 10,
-			family: "sans-serif",
-			weight: "bold"
-		}
+			family: 'sans-serif',
+			weight: 'bold',
+		},
 	},
-	labelPlacement: "always-horizontal",
+	labelPlacement: 'always-horizontal',
 	minScale: 0,
-	maxScale: 0
+	maxScale: 0,
 });
 
 @Injectable({
 	providedIn: 'root',
 })
-
 export class GeovisorSharedService {
-	public mapa = new Map({ basemap: 'hybrid' });
+	public mapa = new Map({basemap: 'hybrid'});
 	public layerUrls = {
 		baseService: 'https://winlmprap09.midagri.gob.pe/winlmprap14/rest/services/ideMidagri',
 		limits: {
@@ -212,7 +251,6 @@ export class GeovisorSharedService {
 			popupTemplate: popuTemplateProvincia,
 			renderer: rendererProvincia,
 			visible: true,
-
 		},
 		{
 			title: 'Limite de distritos',
@@ -232,8 +270,8 @@ export class GeovisorSharedService {
 		{
 			title: 'Con Punche Perú',
 			url: `${this.layerUrls.ppa}`,
-			visible: true,
-			popupTemplate: undefined
+			visible: false,
+			popupTemplate: undefined,
 		},
 		{
 			title: 'Proyecto de Riego Tecnificado',
@@ -247,27 +285,27 @@ export class GeovisorSharedService {
 			visible: false,
 			popupTemplate: undefined,
 		},
-		{ title: 'Suelos SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}25`, visible: false, popupTemplate: undefined },
-		{ title: 'Suelos R', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}24`, visible: false, popupTemplate: undefined },
-		{ title: 'Suelos D', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}23`, visible: false, popupTemplate: undefined },
-		{ title: 'EroCl SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}21`, visible: false, popupTemplate: undefined },
-		{ title: 'CUAT SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}20`, visible: false, popupTemplate: undefined },
-		{ title: 'CUAT D', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}19`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMSD_50000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}17`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMSD_45000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}16`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMSD_2000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}15`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMSD_25000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}14`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMSD_20000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}13`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMSD_12000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}12`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMSD_10000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}11`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMR_100000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}9`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMR_50000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}8`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMR_35000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}7`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMR_30000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}6`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMR_25000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}5`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUMR_20000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}4`, visible: false, popupTemplate: undefined },
-		{ title: 'CTCUM D_10000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}2`, visible: false, popupTemplate: undefined },
-		{ title: 'Agrostología SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}0`, visible: false, popupTemplate: undefined },
+		{title: 'Suelos SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}25`, visible: false, popupTemplate: undefined},
+		{title: 'Suelos R', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}24`, visible: false, popupTemplate: undefined},
+		{title: 'Suelos D', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}23`, visible: false, popupTemplate: undefined},
+		{title: 'EroCl SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}21`, visible: false, popupTemplate: undefined},
+		{title: 'CUAT SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}20`, visible: false, popupTemplate: undefined},
+		{title: 'CUAT D', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}19`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMSD_50000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}17`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMSD_45000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}16`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMSD_2000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}15`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMSD_25000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}14`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMSD_20000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}13`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMSD_12000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}12`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMSD_10000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}11`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMR_100000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}9`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMR_50000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}8`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMR_35000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}7`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMR_30000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}6`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMR_25000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}5`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUMR_20000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}4`, visible: false, popupTemplate: undefined},
+		{title: 'CTCUM D_10000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}2`, visible: false, popupTemplate: undefined},
+		{title: 'Agrostología SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}0`, visible: false, popupTemplate: undefined},
 		{
 			title: 'Escenario déficit hídrico',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.odngrd}0`,
@@ -280,7 +318,7 @@ export class GeovisorSharedService {
 			visible: false,
 			popupTemplate: undefined,
 		},
-		{ title: 'Proyecto especiales', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}4`, visible: false, popupTemplate: undefined },
+		{title: 'Proyecto especiales', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}4`, visible: false, popupTemplate: undefined},
 		{
 			title: 'Áreas bajo riego tecnificado',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}3`,
@@ -293,12 +331,17 @@ export class GeovisorSharedService {
 			visible: false,
 			popupTemplate: undefined,
 		},
-		{ title: 'Estudios obras', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}1`, visible: false, popupTemplate: undefined },
-		{ title: 'AMIR', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}0`, visible: false, popupTemplate: undefined },
-		{ title: 'Cobertizos', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}3`, visible: false, popupTemplate: undefined },
-		{ title: 'Pastos cultivados', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}2`, visible: false, popupTemplate: undefined },
-		{ title: 'Capacitaciones', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}1`, visible: false, popupTemplate: undefined },
-		{ title: 'Asistencia técnica', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}0`, visible: false, popupTemplate: undefined },
+		{title: 'Estudios obras', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}1`, visible: false, popupTemplate: undefined},
+		{title: 'AMIR', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}0`, visible: false, popupTemplate: undefined},
+		{
+			title: 'Cobertizos',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}3`,
+			visible: true,
+			outFields: ['*'],
+		},
+		{title: 'Pastos cultivados', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}2`, visible: false, popupTemplate: undefined},
+		{title: 'Capacitaciones', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}1`, visible: false, popupTemplate: undefined},
+		{title: 'Asistencia técnica', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}0`, visible: false, popupTemplate: undefined},
 	];
 	public view: any = null;
 	public lis: any[] = [];
@@ -314,7 +357,7 @@ export class GeovisorSharedService {
 	public utmNorth = '--';
 	public scale = '--';
 
-	constructor() { }
+	constructor() {}
 
 	initializeMap(mapViewEl: ElementRef): Promise<any> {
 		const container = mapViewEl.nativeElement;
@@ -329,6 +372,7 @@ export class GeovisorSharedService {
 					renderer: layerConfig.renderer,
 					maxScale: layerConfig.maxScale,
 					minScale: layerConfig.minScale,
+					outFields: layerConfig.outFields,
 				});
 			} else {
 				featureLayer = new FeatureLayer({
@@ -361,7 +405,7 @@ export class GeovisorSharedService {
 				minZoom: 5,
 				snapToZoom: false,
 			},
-			padding: { top: 0 },
+			padding: {top: 0},
 			ui: {
 				components: [],
 			},
@@ -419,7 +463,7 @@ export class GeovisorSharedService {
 			expandTooltip: 'BUSQUEDAS',
 			content: buscaCapas,
 		});
-		view.ui.add(buscarCapaExpand, { position: 'top-right', index: 2 });
+		view.ui.add(buscarCapaExpand, {position: 'top-right', index: 2});
 		//Boton de acercar y alejar (1)
 		const zoom = new Zoom({
 			view: view,
@@ -445,7 +489,7 @@ export class GeovisorSharedService {
 			expandTooltip: 'GALERIA DE MAPAS',
 			content: basemapGallery,
 		});
-		view.ui.add(GaleryExpand, { position: 'top-right' });
+		view.ui.add(GaleryExpand, {position: 'top-right'});
 		//Leyenda del mapa
 		const leyenda = new Legend({
 			view: view,
@@ -457,7 +501,7 @@ export class GeovisorSharedService {
 			expandTooltip: 'LEYENDA',
 			content: leyenda,
 		});
-		view.ui.add(leyendaExpand, { position: 'top-right' });
+		view.ui.add(leyendaExpand, {position: 'top-right'});
 		//Funcion de impresion (5)
 		const print = new Print({
 			view: view,
@@ -469,7 +513,7 @@ export class GeovisorSharedService {
 			expandTooltip: 'IMPRESION',
 			content: print,
 		});
-		view.ui.add(ImpresionExpand, { position: 'top-right' });
+		view.ui.add(ImpresionExpand, {position: 'top-right'});
 		//Funcion de medidas (6)
 		const distanciaWidget = new DistanceMeasurement2D({
 			view: view,
@@ -480,7 +524,7 @@ export class GeovisorSharedService {
 			expandTooltip: 'Medir distancia',
 			content: distanciaWidget,
 		});
-		view.ui.add(distanciaExpand, { position: 'top-right' });
+		view.ui.add(distanciaExpand, {position: 'top-right'});
 		const areaWidget = new AreaMeasurement2D({
 			view: view,
 		});
@@ -490,7 +534,7 @@ export class GeovisorSharedService {
 			expandTooltip: 'Medir distancia',
 			content: areaWidget,
 		});
-		view.ui.add(areaExpand, { position: 'top-right' });
+		view.ui.add(areaExpand, {position: 'top-right'});
 		//Funcion de localizar
 		// const locateBtn = new Locate({
 		// 	view: view,
@@ -533,8 +577,8 @@ export class GeovisorSharedService {
 		// });
 		// view.ui.add(controlCapasExpand, 'top-right');
 
-		view.on('pointer-move', (event: { x: any; y: any }) => {
-			const point = this.view.toMap({ x: event.x, y: event.y });
+		view.on('pointer-move', (event: {x: any; y: any}) => {
+			const point = this.view.toMap({x: event.x, y: event.y});
 			this.updateCoordinates(point.latitude, point.longitude);
 		});
 
@@ -549,7 +593,7 @@ export class GeovisorSharedService {
 			.then(
 				(layerView: {
 					watch: (arg0: string, arg1: (value: any) => void) => void;
-					queryFeatures: (arg0: { geometry: __esri.Extent; returnGeometry: boolean; orderByFields: string[] }) => Promise<{ features: any }>;
+					queryFeatures: (arg0: {geometry: __esri.Extent; returnGeometry: boolean; orderByFields: string[]}) => Promise<{features: any}>;
 				}) => {
 					layerView.watch('updating', (value) => {
 						if (!value) {
@@ -561,14 +605,14 @@ export class GeovisorSharedService {
 									returnGeometry: true,
 									orderByFields: ['ubigeo_distrito'],
 								})
-								.then((results: { features: any }) => {
+								.then((results: {features: any}) => {
 									graphics = results.features;
 									this.lis = results.features;
 									this.filteredArray = results.features;
 									this.searchTerm = '';
 
 									const fragment = document.createDocumentFragment();
-									graphics.forEach(function (result: { attributes: any }, index: string) {
+									graphics.forEach(function (result: {attributes: any}, index: string) {
 										const attributes = result.attributes;
 										const name = attributes.nombre_centropoblado;
 										// Create a list zip codes in NY
@@ -593,7 +637,7 @@ export class GeovisorSharedService {
 					});
 				}
 			);
-		const onListClickHandler = (event: { target: any }) => {
+		const onListClickHandler = (event: {target: any}) => {
 			console.log(event.target);
 			const target = event.target;
 			console.log(' =>', target);
@@ -613,7 +657,7 @@ export class GeovisorSharedService {
 							location: result.geometry.centroid,
 						});
 					})
-					.catch(function (error: { name: string }) {
+					.catch(function (error: {name: string}) {
 						if (error.name != 'AbortError') {
 							console.error(error);
 						}
@@ -652,7 +696,7 @@ export class GeovisorSharedService {
 						location: result.geometry.centroid,
 					});
 				})
-				.catch(function (error: { name: string }) {
+				.catch(function (error: {name: string}) {
 					if (error.name != 'AbortError') {
 						console.error(error);
 					}
@@ -660,7 +704,7 @@ export class GeovisorSharedService {
 		}
 		// this.view.when()
 	}
-	toggleLayerVisibility(layerConfig: LayerConfig): void {
+	toggleLayerVisibility(title: string, p0: boolean, layerConfig: LayerConfig): void {
 		layerConfig.visible = !layerConfig.visible;
 		const featureLayer = this.mapa.layers.find((layer) => layer.title === layerConfig.title);
 		if (featureLayer) {
@@ -689,11 +733,11 @@ export class GeovisorSharedService {
 			spatialReference: SpatialReference.WGS84,
 		});
 		const utmWkid = lat >= 0 ? 32600 + zoneNumber : 32700 + zoneNumber; // WKID for UTM zone
-		const projected = projection.project(pointUTM, new SpatialReference({ wkid: utmWkid })) as Point;
+		const projected = projection.project(pointUTM, new SpatialReference({wkid: utmWkid})) as Point;
 
 		const utmPoint = projected as Point;
-		this.utmEast = `${utmPoint.x.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m`;
-		this.utmNorth = `${utmPoint.y.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m`;
+		this.utmEast = `${utmPoint.x.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} m`;
+		this.utmNorth = `${utmPoint.y.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} m`;
 		// Calculate UTM Zone
 	}
 
@@ -704,6 +748,18 @@ export class GeovisorSharedService {
 	}
 
 	formatScale(scale: number): string {
-		return scale.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+		return scale.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+	}
+
+	toggleLayerVisibility2(layerTitle: string, visibility: boolean): void {
+		const layer = this.mapa.layers.find((layer: any) => layer.title === layerTitle);
+		if (layer) {
+			layer.visible = visibility;
+		}
+	}
+
+	getLayerVisibility(layerTitle: string): boolean {
+		const layer = this.mapa.layers.find((layer: any) => layer.title === layerTitle);
+		return layer ? layer.visible : false;
 	}
 }
