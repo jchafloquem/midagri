@@ -2,20 +2,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-// :root {
-// 	--primary: #233559;
-// 	--accent: #d32f2f;
-// 	--secondary: #1d72b8;
-// 	--default: #f8f8f8;
-// 	--success: #28c76f;
-// 	--textPrimary: #1e293b;
-// 	--textDefault: #64748b;
-// 	--mdc-shape-small: 12px;
-// 	--mdc-shape-medium: 12px;
-// 	--mdc-checkbox-state-layer-size: 30px;
-// 	--radius: 12px;
-// 	--mdc-protected-button-container-shape: 12px !important;
-// }
+:root {
+	--primary: #233559;
+	--accent: #d32f2f;
+	--secondary: #1d72b8;
+	--default: #f8f8f8;
+	--success: #28c76f;
+	--textPrimary: #1e293b;
+	--textDefault: #64748b;
+	--mdc-shape-small: 12px;
+	--mdc-shape-medium: 12px;
+	--mdc-checkbox-state-layer-size: 30px;
+	--radius: 12px;
+	--mdc-protected-button-container-shape: 12px !important;
+	--mdc-fab-container-shape: 12px !important;
+}
+.calcite-mode-light {
+	--calcite-color-foreground-3: red !important;
+	--calcite-color-text-1: white !important;
+}
 * {
 	margin: 0;
 	padding: 0;
@@ -36,4 +41,11 @@ body {
 
 .esri-ui-top-right.esri-ui-corner {
 	padding-top: 75px;
+}
+.mat-mdc-icon-button .mat-mdc-button-persistent-ripple {
+	border-radius: 0% !important;
+	-webkit-border-radius: 0% !important;
+	-moz-border-radius: 0% !important;
+	-ms-border-radius: 0% !important;
+	-o-border-radius: 0% !important;
 }

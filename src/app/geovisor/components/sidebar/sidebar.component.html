@@ -1,25 +1,41 @@
 <div
-	class="absolute top-1/2 -translate-y-1/2 z-50 h-[300px] w-[320px] bg-white menu__container flex flex-row"
+	class="absolute top-1/2 -translate-y-1/2 z-50 h-[75%] max-h-[800px] w-[320px] bg-white menu__container flex flex-row border border-solid border-gray-300 border-l-0 border-t-0"
 	[ngClass]="{'menu__container--open': toogleMenu}">
-	<div class="w-[272px]">
-		<button (click)="toggleLayer('Limite de departamentos')">Toggle Limite de departamentos</button>
-		<button (click)="toggleLayer('Limite de provincias')">Toggle Limite de provincias</button>
-		<button (click)="toggleLayer('Limite de distritos')">Toggle Limite de distritos</button>
-		<button (click)="toggleLayer('Con Punche Perú')">Con Punche Perú</button>
-		<button (click)="toggleLayer('Cobertizos')">Cobertizos</button>
-		<button (click)="toggleLayer('Pastos cultivados')">Pastos cultivados</button>
+	<div class="w-[272px] overflow-y-scroll">
+		<div class="bg-primary w-full text-center text-white font-medium py-3">{{ subMenu | uppercase }}</div>
+		@if (subMenu==='capas') {
+		<div class="w-full">
+			@for (layer of _geovisorSharedService.layers ; track layer) {
+
+			<div class="flex flex-row justify-between items-center">
+				<div class="text-accent text-sm">{{ layer.title }}</div>
+				<div>
+					<mat-slide-toggle class="example-margin" [checked]="layer.visible" (click)="toggleLayer(layer.title)"></mat-slide-toggle>
+				</div>
+			</div>
+			}
+		</div>
+		}
 	</div>
-	<div class="w-[48px] flex flex-col items-start">
-		<button mat-button color="primary">Primary</button>
-		<button mat-raised-button class="" color="primary">Primary</button>
-		<button mat-icon-button class="" color="primary" (click)="clickToogleMenu()">
-			<mat-icon class="material-icons-round">chevron_right</mat-icon>
+	<div class="w-[48px] flex flex-col items-start border-0 border-l border-solid border-gray-300">
+		<button mat-icon-button class="bg-primary text-white rounded-none rounded-tr-lg" color="primary" (click)="clickToogleMenu()">
+			<mat-icon class="material-icons-round">{{ this.toogleMenu ? 'chevron_left' : 'chevron_right' }}</mat-icon>
 		</button>
-		<button mat-icon-button class="" color="primary" (click)="clickToogleMenu()">
-			<mat-icon class="material-icons-round">chevron_right</mat-icon>
+		<button
+			mat-icon-button
+			class=""
+			color="accent"
+			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'capas'}"
+			(click)="subMenu = 'capas'">
+			<mat-icon class="material-icons-round">layers</mat-icon>
 		</button>
-		<button mat-fab class="" color="primary">
-			<mat-icon class="material-icons-round">chevron_right</mat-icon>
+		<button
+			mat-icon-button
+			class=""
+			color="accent"
+			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'leyenda'}"
+			(click)="subMenu = 'leyenda'">
+			<mat-icon class="material-icons-round">view_list</mat-icon>
 		</button>
 	</div>
 </div>
