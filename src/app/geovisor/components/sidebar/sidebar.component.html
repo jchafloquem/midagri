@@ -10,7 +10,11 @@
 			<div class="flex flex-row justify-between items-center">
 				<div class="text-accent text-sm">{{ layer.title }}</div>
 				<div>
-					<mat-slide-toggle class="example-margin" [checked]="layer.visible" (click)="toggleLayer(layer.title)"></mat-slide-toggle>
+					<mat-slide-toggle
+						class="example-margin"
+						color="primary"
+						[checked]="layer.visible"
+						(click)="toggleLayer(layer.title)"></mat-slide-toggle>
 				</div>
 			</div>
 			}
