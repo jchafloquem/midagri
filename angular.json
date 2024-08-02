@@ -28,7 +28,7 @@
 								"input": "public"
 							}
 						],
-						"styles": ["src/themes/theme-trilce.scss", "src/styles.scss"],
+						"styles": ["src/themes/theme.scss", "src/styles.scss"],
 						"scripts": []
 					},
 					"configurations": {
