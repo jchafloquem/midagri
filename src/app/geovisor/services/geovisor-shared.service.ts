@@ -309,7 +309,7 @@ export class GeovisorSharedService {
 		{
 			title: 'Escenario déficit hídrico',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.odngrd}0`,
-			visible: true,
+			visible: false,
 			popupTemplate: undefined,
 		},
 		{
@@ -336,8 +336,8 @@ export class GeovisorSharedService {
 		{
 			title: 'Cobertizos',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}3`,
-			visible: true,
-			outFields: ['*'],
+			visible: false,
+			popupTemplate: undefined,
 		},
 		{title: 'Pastos cultivados', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}2`, visible: false, popupTemplate: undefined},
 		{title: 'Capacitaciones', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}1`, visible: false, popupTemplate: undefined},
@@ -368,11 +368,7 @@ export class GeovisorSharedService {
 					url: layerConfig.url,
 					title: layerConfig.title,
 					visible: layerConfig.visible,
-					labelingInfo: layerConfig.labelingInfo,
-					renderer: layerConfig.renderer,
-					maxScale: layerConfig.maxScale,
-					minScale: layerConfig.minScale,
-					outFields: layerConfig.outFields,
+					// outFields: layerConfig.outFields,
 				});
 			} else {
 				featureLayer = new FeatureLayer({
@@ -380,7 +376,7 @@ export class GeovisorSharedService {
 					title: layerConfig.title,
 					popupTemplate: layerConfig.popupTemplate,
 					labelingInfo: layerConfig.labelingInfo,
-					outFields: layerConfig.outFields,
+					// outFields: layerConfig.outFields,
 					visible: layerConfig.visible,
 					renderer: layerConfig.renderer,
 					maxScale: layerConfig.maxScale,
@@ -584,59 +580,59 @@ export class GeovisorSharedService {
 
 		//Procedimiento Slider de busqueda de Centro Poblado de capital de distrito
 
-		const featureLayer = this.mapa.layers.find((layer) => layer.title === 'Centro Urbano');
-		console.log('1 =>', featureLayer);
+		// const featureLayer = this.mapa.layers.find((layer) => layer.title === 'Centro Urbano');
+		// console.log('1 =>', featureLayer);
 		this.view = view;
 		let graphics: any;
-		this.view
-			.whenLayerView(featureLayer)
-			.then(
-				(layerView: {
-					watch: (arg0: string, arg1: (value: any) => void) => void;
-					queryFeatures: (arg0: {geometry: __esri.Extent; returnGeometry: boolean; orderByFields: string[]}) => Promise<{features: any}>;
-				}) => {
-					layerView.watch('updating', (value) => {
-						if (!value) {
-							// wait for the layer view to finish updating
-							// query all the features available for drawing.
-							layerView
-								.queryFeatures({
-									geometry: view.extent,
-									returnGeometry: true,
-									orderByFields: ['ubigeo_distrito'],
-								})
-								.then((results: {features: any}) => {
-									graphics = results.features;
-									this.lis = results.features;
-									this.filteredArray = results.features;
-									this.searchTerm = '';
+		// this.view
+		// 	.whenLayerView(featureLayer)
+		// 	.then(
+		// 		(layerView: {
+		// 			watch: (arg0: string, arg1: (value: any) => void) => void;
+		// 			queryFeatures: (arg0: {geometry: __esri.Extent; returnGeometry: boolean; orderByFields: string[]}) => Promise<{features: any}>;
+		// 		}) => {
+		// 			layerView.watch('updating', (value) => {
+		// 				if (!value) {
+		// 					// wait for the layer view to finish updating
+		// 					// query all the features available for drawing.
+		// 					layerView
+		// 						.queryFeatures({
+		// 							geometry: view.extent,
+		// 							returnGeometry: true,
+		// 							orderByFields: ['ubigeo_distrito'],
+		// 						})
+		// 						.then((results: {features: any}) => {
+		// 							graphics = results.features;
+		// 							this.lis = results.features;
+		// 							this.filteredArray = results.features;
+		// 							this.searchTerm = '';
 
-									const fragment = document.createDocumentFragment();
-									graphics.forEach(function (result: {attributes: any}, index: string) {
-										const attributes = result.attributes;
-										const name = attributes.nombre_centropoblado;
-										// Create a list zip codes in NY
-										const li = document.createElement('li');
-										li.classList.add('panel-result');
-										li.tabIndex = 0;
-										li.setAttribute('data-result-id', index);
-										li.textContent = name;
-										fragment.appendChild(li);
-									});
-									// Empty the current list
-									console.log(results.features);
-									if (listNode) {
-										listNode.innerHTML = '';
-										listNode.appendChild(fragment);
-									}
-								})
-								.catch(function (error: any) {
-									//console.error('query failed: ', error);
-								});
-						}
-					});
-				}
-			);
+		// 							const fragment = document.createDocumentFragment();
+		// 							graphics.forEach(function (result: {attributes: any}, index: string) {
+		// 								const attributes = result.attributes;
+		// 								const name = attributes.nombre_centropoblado;
+		// 								// Create a list zip codes in NY
+		// 								const li = document.createElement('li');
+		// 								li.classList.add('panel-result');
+		// 								li.tabIndex = 0;
+		// 								li.setAttribute('data-result-id', index);
+		// 								li.textContent = name;
+		// 								fragment.appendChild(li);
+		// 							});
+		// 							// Empty the current list
+		// 							console.log(results.features);
+		// 							if (listNode) {
+		// 								listNode.innerHTML = '';
+		// 								listNode.appendChild(fragment);
+		// 							}
+		// 						})
+		// 						.catch(function (error: any) {
+		// 							//console.error('query failed: ', error);
+		// 						});
+		// 				}
+		// 			});
+		// 		}
+		// 	);
 		const onListClickHandler = (event: {target: any}) => {
 			console.log(event.target);
 			const target = event.target;
