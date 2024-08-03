@@ -14,8 +14,10 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 })
 export class SidebarComponent {
 	public _geovisorSharedService = inject(GeovisorSharedService);
+
 	public subMenu: 'leyenda' | 'capas' = 'capas';
-	public toogleMenu = true;
+
+	public toogleMenu = false;
 
 	clickToogleMenu(): void {
 		this.toogleMenu = !this.toogleMenu;
