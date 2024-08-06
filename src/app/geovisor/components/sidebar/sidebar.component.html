@@ -1,25 +1,55 @@
 <div
 	class="absolute top-1/2 -translate-y-1/2 z-50 h-[75%] max-h-[800px] w-[320px] bg-white menu__container flex flex-row border border-solid border-gray-300 border-l-0 border-t-0"
 	[ngClass]="{'menu__container--open': toogleMenu}">
-	<div class="w-[272px] overflow-y-scroll">
-		<div class="bg-primary w-full text-center text-white font-medium py-3">{{ subMenu | uppercase }}</div>
-		@if (subMenu==='capas') {
-		<div class="w-full">
-			@for (layer of _geovisorSharedService.layers ; track layer) {
+	<div class="w-[272px] h-full">
+		<div class="bg-primary h-[48px] w-full text-center text-white font-medium flex flex-row justify-center items-center">
+			<span>
+				{{ subMenu | uppercase }}
+			</span>
+		</div>
+		<div class="overflow-y-auto overflow-x-hidden max-h-[calc(100%-48px)]">
+			@if (subMenu==='capas') {
+			<div class="h-full">
+				<mat-accordion>
+					@for (layerG of LayerGroup ; track layerG) {
 
-			<div class="flex flex-row justify-between items-center">
-				<div class="text-accent text-sm">{{ layer.title }}</div>
-				<div>
-					<mat-slide-toggle
-						class="example-margin"
-						color="primary"
-						[checked]="layer.visible"
-						(click)="toggleLayer(layer.title)"></mat-slide-toggle>
-				</div>
+					<mat-expansion-panel class="m-0 text-accent" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+						<mat-expansion-panel-header>
+							<mat-panel-title>{{ layerG.groupTitle }}</mat-panel-title>
+							<mat-panel-description class="flex-grow-0">
+								<span class="text-s w-5 h-5 p-0.5 text-center text-white bg-accent rounded-full">{{ layerG.layers.length }}</span>
+							</mat-panel-description>
+						</mat-expansion-panel-header>
+						<div class="flex flex-col w-full gap-1.5">
+							@for (layer of layerG.layers ; track layer ;let last = $last) {
+
+							<div class="flex flex-row justify-between items-center">
+								<div class="text-accent text-sm">{{ layer.title }}</div>
+
+								<div>
+									<mat-slide-toggle
+										class="example-margin"
+										color="primary"
+										[checked]="layer.visible"
+										(click)="toggleLayer(layer.title)"></mat-slide-toggle>
+								</div>
+							</div>
+							@if (!last) {
+
+							<div class="border-0 border-b border-dashed border-gray-300 w-full"></div>
+							} }
+						</div>
+					</mat-expansion-panel>
+					}
+				</mat-accordion>
+
+				<!--
+				 -->
 			</div>
+			} @if (subMenu==='leyenda') {
+			<div id="legend-container"></div>
 			}
 		</div>
-		}
 	</div>
 	<div class="w-[48px] flex flex-col items-start border-0 border-l border-solid border-gray-300">
 		<button mat-icon-button class="bg-primary text-white rounded-none rounded-tr-lg" color="primary" (click)="clickToogleMenu()">
@@ -38,7 +68,7 @@
 			class=""
 			color="accent"
 			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'leyenda'}"
-			(click)="subMenu = 'leyenda'">
+			(click)="subMenu = 'leyenda'; createLegend()">
 			<mat-icon class="material-icons-round">view_list</mat-icon>
 		</button>
 	</div>
