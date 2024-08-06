@@ -27,18 +27,8 @@ import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import Zoom from '@arcgis/core/widgets/Zoom.js';
+import {LayerConfig} from '../interface/layerConfig';
 
-interface LayerConfig {
-	title: string;
-	url: string;
-	popupTemplate?: PopupTemplate;
-	labelingInfo?: any;
-	visible: boolean;
-	outFields?: string[];
-	renderer?: any;
-	maxScale?: number;
-	minScale?: number;
-}
 //Personalizacion de la capa Departamentos
 const fillSymbolDepartamento = new SimpleFillSymbol({
 	color: [255, 255, 255, 0], // Color rojo con 50% de opacidad
@@ -266,6 +256,7 @@ export class GeovisorSharedService {
 			popupTemplate: popuTemplateDepartamento,
 			renderer: rendererDepartamento,
 			visible: true,
+			group: 'Límites Censales',
 		},
 		{
 			title: 'Limite de provincias',
@@ -274,6 +265,7 @@ export class GeovisorSharedService {
 			popupTemplate: popuTemplateProvincia,
 			renderer: rendererProvincia,
 			visible: true,
+			group: 'Límites Censales',
 		},
 		{
 			title: 'Limite de distritos',
@@ -282,6 +274,7 @@ export class GeovisorSharedService {
 			popupTemplate: popuTemplateDistrito,
 			renderer: rendererDistrito,
 			visible: true,
+			group: 'Límites Censales',
 		},
 		//*Servicios de capas de informacion
 		{
@@ -289,83 +282,254 @@ export class GeovisorSharedService {
 			url: `${this.layerUrls.baseService}/${this.layerUrls.agroideas}`,
 			visible: false,
 			popupTemplate: undefined,
+			group: 'Agro Ideas',
 		},
 		{
-			title: 'Con Punche Perú',
+			title: 'Ppa',
 			url: `${this.layerUrls.ppa}`,
 			visible: false,
 			popupTemplate: popuTemplateConPunchePeru,
 			renderer: renderermarkerSymbol,
+			group: 'ConPuchePeru',
 		},
 		{
 			title: 'Proyecto de Riego Tecnificado',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.psi}`,
 			visible: false,
 			popupTemplate: undefined,
+			group: 'PSI',
 		},
 		{
 			title: 'Superficie Agricola Nacional',
 			url: `${this.layerUrls.esan}`,
 			visible: false,
 			popupTemplate: undefined,
+			group: 'ESAN',
 		},
-		{title: 'Suelos SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}25`, visible: false, popupTemplate: undefined},
-		{title: 'Suelos R', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}24`, visible: false, popupTemplate: undefined},
-		{title: 'Suelos D', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}23`, visible: false, popupTemplate: undefined},
-		{title: 'EroCl SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}21`, visible: false, popupTemplate: undefined},
-		{title: 'CUAT SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}20`, visible: false, popupTemplate: undefined},
-		{title: 'CUAT D', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}19`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMSD_50000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}17`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMSD_45000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}16`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMSD_2000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}15`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMSD_25000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}14`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMSD_20000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}13`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMSD_12000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}12`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMSD_10000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}11`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMR_100000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}9`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMR_50000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}8`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMR_35000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}7`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMR_30000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}6`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMR_25000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}5`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUMR_20000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}4`, visible: false, popupTemplate: undefined},
-		{title: 'CTCUM D_10000', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}2`, visible: false, popupTemplate: undefined},
-		{title: 'Agrostología SD', url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}0`, visible: false, popupTemplate: undefined},
+		{
+			title: 'Suelos SD',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}25`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'Suelos R',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}24`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'Suelos D',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}23`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'EroCl SD',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}21`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CUAT SD',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}20`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CUAT D',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}19`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMSD_50000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}17`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMSD_45000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}16`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMSD_2000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}15`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMSD_25000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}14`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMSD_20000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}13`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMSD_12000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}12`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMSD_10000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}11`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMR_100000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}9`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMR_50000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}8`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMR_35000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}7`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMR_30000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}6`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMR_25000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}5`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUMR_20000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}4`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'CTCUM D_10000',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}2`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
+		{
+			title: 'Agrostología SD',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgaaa}0`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGAAA',
+		},
 		{
 			title: 'Escenario déficit hídrico',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.odngrd}0`,
 			visible: false,
 			popupTemplate: undefined,
+			group: 'ODNGRD',
 		},
 		{
 			title: 'Elementos_Expuestos',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.odngrd}1`,
 			visible: false,
 			popupTemplate: undefined,
+			group: 'ODNGRD',
 		},
-		{title: 'Proyecto especiales', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}4`, visible: false, popupTemplate: undefined},
+		{
+			title: 'Proyecto especiales',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}4`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGIHR',
+		},
 		{
 			title: 'Áreas bajo riego tecnificado',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}3`,
 			visible: false,
 			popupTemplate: undefined,
+			group: 'DGIHR',
 		},
 		{
 			title: 'Proyectos emblemáticos',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}2`,
 			visible: false,
 			popupTemplate: undefined,
+			group: 'DGIHR',
 		},
-		{title: 'Estudios obras', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}1`, visible: false, popupTemplate: undefined},
-		{title: 'AMIR', url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}0`, visible: false, popupTemplate: undefined},
+		{
+			title: 'Estudios obras',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}1`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGIHR',
+		},
+		{
+			title: 'AMIR',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgihr}0`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGIHR',
+		},
 		{
 			title: 'Cobertizos',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}3`,
 			visible: false,
 			popupTemplate: undefined,
+			group: 'DGDG',
 		},
-		{title: 'Pastos cultivados', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}2`, visible: false, popupTemplate: undefined},
-		{title: 'Capacitaciones', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}1`, visible: false, popupTemplate: undefined},
-		{title: 'Asistencia técnica', url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}0`, visible: false, popupTemplate: undefined},
+		{
+			title: 'Pastos cultivados',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}2`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGDG',
+		},
+		{
+			title: 'Capacitaciones',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}1`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGDG',
+		},
+		{
+			title: 'Asistencia técnica',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.dgdg}0`,
+			visible: false,
+			popupTemplate: undefined,
+			group: 'DGDG',
+		},
 	];
 	public view: any = null;
 	public lis: any[] = [];
@@ -380,6 +544,7 @@ export class GeovisorSharedService {
 	public utmEast = '--';
 	public utmNorth = '--';
 	public scale = '--';
+	public legend!: Legend;
 
 	constructor() {}
 
@@ -547,6 +712,11 @@ export class GeovisorSharedService {
 			}
 		};
 		listNode?.addEventListener('click', onListClickHandler);
+
+		this.legend = new Legend({
+			view: view,
+			container: document.createElement('div'),
+		});
 		return this.view.when();
 	}
 	capa(): void {
@@ -632,5 +802,9 @@ export class GeovisorSharedService {
 	getLayerVisibility(layerTitle: string): boolean {
 		const layer = this.mapa.layers.find((layer: any) => layer.title === layerTitle);
 		return layer ? layer.visible : false;
+	}
+	private capas: Record<string, FeatureLayer> = {};
+	getActiveLayers(): FeatureLayer[] {
+		return Object.values(this.capas).filter((layer) => layer.visible);
 	}
 }
