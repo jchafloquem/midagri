@@ -1,4 +1,4 @@
-import {ElementRef, Injectable} from '@angular/core';
+import {ElementRef, inject, Injectable} from '@angular/core';
 //Libreria de ArcGIS 4.30
 
 import * as projection from '@arcgis/core/geometry/projection';
@@ -28,12 +28,17 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import Zoom from '@arcgis/core/widgets/Zoom.js';
 import {LayerConfig} from '../interface/layerConfig';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import Color from '@arcgis/core/Color';
+import WebMap from '@arcgis/core/WebMap';
+import GroupLayer from '@arcgis/core/layers/GroupLayer';
 
 //Personalizacion de la capa Departamentos
 const fillSymbolDepartamento = new SimpleFillSymbol({
-	color: [255, 255, 255, 0], // Color rojo con 50% de opacidad
+	color: new Color([255, 255, 255, 0]), // Color rojo con 50% de opacidad
 	outline: {
-		color: [0, 0, 0],
+		color: new Color([0, 0, 0]),
 		width: 2,
 	},
 });
@@ -806,5 +811,45 @@ export class GeovisorSharedService {
 	private capas: Record<string, FeatureLayer> = {};
 	getActiveLayers(): FeatureLayer[] {
 		return Object.values(this.capas).filter((layer) => layer.visible);
+	}
+
+	public regionFeature!: FeatureLayer;
+	getRegionFeature(): FeatureLayer {
+		this.regionFeature = new FeatureLayer({
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.departamentos}`,
+			visible: false,
+		});
+		return this.regionFeature;
+	}
+	public provinciaFeature!: FeatureLayer;
+	getProvinciaFeature(): FeatureLayer {
+		this.provinciaFeature = new FeatureLayer({
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.provincias}`,
+			visible: false,
+		});
+		return this.provinciaFeature;
+	}
+	public distritosFeature!: FeatureLayer;
+	getDistritosFeature(): FeatureLayer {
+		this.distritosFeature = new FeatureLayer({
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.distritos}`,
+			visible: false,
+		});
+		return this.distritosFeature;
+	}
+
+	async removeLayerFromGroup(groupId: string, layerId: string): Promise<void> {
+		// await this.view?.load();
+
+		const groupLayer = this.mapa?.layers.find((layer) => {
+			return layer instanceof GroupLayer && layer.id === groupId;
+		}) as GroupLayer;
+
+		if (groupLayer) {
+			const layerToRemove = groupLayer.findLayerById(layerId);
+			if (layerToRemove) {
+				groupLayer.remove(layerToRemove);
+			}
+		}
 	}
 }

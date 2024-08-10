@@ -9,45 +9,14 @@
 		</div>
 		<div class="overflow-y-auto overflow-x-hidden max-h-[calc(100%-48px)]">
 			@if (subMenu==='capas') {
-			<div class="h-full">
-				<mat-accordion>
-					@for (layerG of LayerGroup ; track layerG) {
+			<app-capas class="h-full"></app-capas>
 
-					<mat-expansion-panel class="m-0 text-accent" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-						<mat-expansion-panel-header>
-							<mat-panel-title>{{ layerG.groupTitle }}</mat-panel-title>
-							<mat-panel-description class="flex-grow-0">
-								<span class="text-s w-5 h-5 p-0.5 text-center text-white bg-accent rounded-full">{{ layerG.layers.length }}</span>
-							</mat-panel-description>
-						</mat-expansion-panel-header>
-						<div class="flex flex-col w-full gap-1.5">
-							@for (layer of layerG.layers ; track layer ;let last = $last) {
+			} @if (subMenu==='leyendas') {
+			<app-leyenda class="h-full"></app-leyenda>
 
-							<div class="flex flex-row justify-between items-center">
-								<div class="text-accent text-sm">{{ layer.title }}</div>
+			} @if (subMenu==='filtros') {
+			<app-filtro class="h-full"></app-filtro>
 
-								<div>
-									<mat-slide-toggle
-										class="example-margin"
-										color="primary"
-										[checked]="layer.visible"
-										(click)="toggleLayer(layer.title)"></mat-slide-toggle>
-								</div>
-							</div>
-							@if (!last) {
-
-							<div class="border-0 border-b border-dashed border-gray-300 w-full"></div>
-							} }
-						</div>
-					</mat-expansion-panel>
-					}
-				</mat-accordion>
-
-				<!--
-				 -->
-			</div>
-			} @if (subMenu==='leyenda') {
-			<div id="legend-container"></div>
 			}
 		</div>
 	</div>
@@ -67,9 +36,17 @@
 			mat-icon-button
 			class=""
 			color="accent"
-			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'leyenda'}"
-			(click)="subMenu = 'leyenda'; createLegend()">
+			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'leyendas'}"
+			(click)="subMenu = 'leyendas'">
 			<mat-icon class="material-icons-round">view_list</mat-icon>
+		</button>
+		<button
+			mat-icon-button
+			class=""
+			color="accent"
+			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'filtros'}"
+			(click)="subMenu = 'filtros'">
+			<mat-icon class="material-icons-round">filter_alt</mat-icon>
 		</button>
 	</div>
 </div>
