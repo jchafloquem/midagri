@@ -22,7 +22,17 @@ export class SidebarComponent {
 
 	public toogleMenu = true;
 
-	clickToogleMenu(): void {
-		this.toogleMenu = !this.toogleMenu;
+	clickToogleMenu(filtro?: 'leyendas' | 'capas' | 'filtros'): void {
+		if (filtro == undefined) {
+			this.toogleMenu = !this.toogleMenu;
+		} else {
+			if (this.subMenu == filtro) {
+				this.subMenu = filtro;
+				this.toogleMenu = !this.toogleMenu;
+			} else {
+				this.subMenu = filtro;
+				this.toogleMenu = true;
+			}
+		}
 	}
 }
