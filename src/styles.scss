@@ -39,9 +39,7 @@ body {
 	font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-.esri-ui-top-right.esri-ui-corner {
-	top: 80px;
-}
+
 
 .mat-mdc-icon-button .mat-mdc-button-persistent-ripple {
 	border-radius: 0% !important;
@@ -51,6 +49,9 @@ body {
 	-o-border-radius: 0% !important;
 }
 
+.esri-ui-top-right.esri-ui-corner {
+	top: 80px;
+}
 .esri-component {
 	//background-image: url('esri-icon-maximize'); /* Imagen de fondo del widget */
 	background-size: auto;
@@ -62,6 +63,7 @@ body {
 	border-radius: 20px;
 	padding: 6px;
 	font-family: Arial, sans-serif;
+
 }
 .esri-widget {
 	box-sizing: border-box;
@@ -69,8 +71,13 @@ body {
 	--esri-widget-padding-x: 15px;
 	--esri-widget-padding-y: 12px;
 	--esri-widget-padding: var(--esri-widget-padding-y) var(--esri-widget-padding-x);
-	background-color: #fff;
+	background-color: #1ca956;
 	font-family: Avenir Next, Helvetica Neue, helvetica, arial, sans-serif;
 	font-size: 14px;
 	line-height: 1.3em;
 }
+.esri-labeled-switch__label-content {
+	background-color: #1ca956;
+	color: #323232;
+}
+
