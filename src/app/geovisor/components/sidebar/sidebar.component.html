@@ -1,8 +1,42 @@
-<div
-	class="absolute top-1/2 -translate-y-1/2 z-50 h-[75%] max-h-[800px] w-[320px] bg-white menu__container flex flex-row border border-solid border-gray-300 border-l-0 border-t-0"
-	[ngClass]="{'menu__container--open': toogleMenu}">
-	<div class="w-[272px] h-full">
-		<div class="bg-primary h-[48px] w-full text-center text-white font-medium flex flex-row justify-center items-center">
+<div class="absolute top-[64px] z-50 h-[calc(100%-64px)] w-[48px] bg-white flex flex-row border">
+	<div class="z-50 bg-[#e5e5e5] w-[48px] flex flex-col items-start border-0 border-r border-solid border-gray-300 justify-between">
+		<div>
+			<button
+				mat-icon-button
+				class=""
+				color="accent"
+				[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'capas'}"
+				(click)="subMenu = 'capas'">
+				<mat-icon class="material-icons-round">layers</mat-icon>
+			</button>
+			<button
+				mat-icon-button
+				class=""
+				color="accent"
+				[ngClass]="{'text-white bg-primary rounded-none ': subMenu === 'leyendas'}"
+				(click)="subMenu = 'leyendas'">
+				<mat-icon class="material-icons-round">view_list</mat-icon>
+			</button>
+			<button
+				mat-icon-button
+				class=""
+				color="accent"
+				[ngClass]="{'text-white bg-primary rounded-none ': subMenu === 'filtros'}"
+				(click)="subMenu = 'filtros'">
+				<mat-icon class="material-icons-round">filter_alt</mat-icon>
+			</button>
+		</div>
+		<div>
+			<button mat-icon-button class="bg-primary text-white rounded-none" color="primary" (click)="clickToogleMenu()">
+				<mat-icon class="material-icons-round">{{ this.toogleMenu ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+			</button>
+		</div>
+	</div>
+	<div
+		class="z-40 h-[calc(100%-64px)] min-h-full bg-white w-[272px] menu__container top-0 absolute left-[48px] shadow-lg"
+		[ngClass]="{'menu__container--open': toogleMenu}">
+		<div
+			class="bg-[#e5e5e5] h-[48px] w-full text-left text-base text-textPrimary font-medium flex flex-row justify-start items-center border-0 border-b-4 border-solid border-accent pl-2">
 			<span>
 				{{ subMenu | uppercase }}
 			</span>
@@ -19,34 +53,5 @@
 
 			}
 		</div>
-	</div>
-	<div class="w-[48px] flex flex-col items-start border-0 border-l border-solid border-gray-300">
-		<button mat-icon-button class="bg-primary text-white rounded-none rounded-tr-lg" color="primary" (click)="clickToogleMenu()">
-			<mat-icon class="material-icons-round">{{ this.toogleMenu ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-		</button>
-		<button
-			mat-icon-button
-			class=""
-			color="accent"
-			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'capas'}"
-			(click)="subMenu = 'capas'">
-			<mat-icon class="material-icons-round">layers</mat-icon>
-		</button>
-		<button
-			mat-icon-button
-			class=""
-			color="accent"
-			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'leyendas'}"
-			(click)="subMenu = 'leyendas'">
-			<mat-icon class="material-icons-round">view_list</mat-icon>
-		</button>
-		<button
-			mat-icon-button
-			class=""
-			color="accent"
-			[ngClass]="{'text-white bg-accent rounded-none ': subMenu === 'filtros'}"
-			(click)="subMenu = 'filtros'">
-			<mat-icon class="material-icons-round">filter_alt</mat-icon>
-		</button>
 	</div>
 </div>

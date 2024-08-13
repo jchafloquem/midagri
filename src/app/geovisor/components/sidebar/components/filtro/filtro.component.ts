@@ -40,20 +40,7 @@ export class FiltroComponent implements OnInit {
 	public provincia = new FormControl<provincia | null>(null, [Validators.required]);
 	public distrito = new FormControl<region | null>(null, [Validators.required]);
 	public regionFeatureLayer!: any;
-	public darkBackgroundLayer = new FeatureLayer({
-		url: `https://winlmprap09.midagri.gob.pe/winlmprap14/rest/services/ideMidagri/Limites_Censales/MapServer/0`,
-		renderer: new SimpleRenderer({
-			symbol: new SimpleFillSymbol({
-				color: new Color([0, 0, 0, 0.8]), // Color de fondo oscuro
-				outline: {
-					width: 0, // Sin borde para el fondo oscuro
-					color: new Color([0, 0, 0, 0]),
-				},
-			}),
-		}),
-		definitionExpression: '1=1', // Mostrar todas las regiones como fondo oscuro
-		blendMode: 'multiply', // Mezclar para oscurecer todo excepto la capa seleccionada
-	});
+	public darkBackgroundLayer!: any;
 	public groupLayerFiltro = new GroupLayer({
 		id: 'groupLayerFiltro',
 		title: 'Filtros',
@@ -69,14 +56,32 @@ export class FiltroComponent implements OnInit {
 		console.log(' =>', this.region.value);
 		this.getRegion();
 	}
+	fondoDarkBlack(): void {
+		this._geovisorSharedService.mapa.remove(this.darkBackgroundLayer);
+		this.darkBackgroundLayer = new FeatureLayer({
+			url: `https://winlmprap09.midagri.gob.pe/winlmprap14/rest/services/ideMidagri/Limites_Censales/MapServer/0`,
+			renderer: new SimpleRenderer({
+				symbol: new SimpleFillSymbol({
+					color: new Color([0, 0, 0, 0.5]), // Color de fondo oscuro
+					outline: {
+						width: 0, // Sin borde para el fondo oscuro
+						color: new Color([0, 0, 0, 0]),
+					},
+				}),
+			}),
+			definitionExpression: `CODDEP <> '${this.region.value?.coddep}'`, // Mostrar todas las regiones como fondo oscuro
+			blendMode: 'multiply', // Mezclar para oscurecer todo excepto la capa seleccionada
+			legendEnabled: false,
+		});
 
+		this._geovisorSharedService.mapa?.add(this.darkBackgroundLayer);
+	}
 	getRegion(): void {
 		//this.spinner.show();
 
 		this._geovisorSharedService.removeLayerFromGroup('groupLayerFiltro', 'regionSeleccionada');
 		this._geovisorSharedService.mapa.remove(this.regionFeatureLayer);
-		this._geovisorSharedService.mapa.remove(this.darkBackgroundLayer);
-		this._geovisorSharedService.mapa?.add(this.darkBackgroundLayer);
+		this.fondoDarkBlack();
 		const regionFeature = this._geovisorSharedService.getRegionFeature();
 
 		if (regionFeature) {
@@ -104,15 +109,16 @@ export class FiltroComponent implements OnInit {
 							title: 'Límites Censales - Región',
 							renderer: new SimpleRenderer({
 								symbol: new SimpleFillSymbol({
-									color: new Color([255, 165, 0, 0.1]),
+									color: new Color([28, 169, 86, 0.1]),
 									outline: {
 										width: 3,
-										color: new Color([255, 165, 0, 1]),
+										color: new Color([28, 169, 86, 1]),
 									},
 								}),
 							}),
 							definitionExpression: whereClause,
 							blendMode: 'source-atop',
+							legendEnabled: false,
 						});
 
 						// Agregar la nueva capa al mapa
@@ -132,7 +138,7 @@ export class FiltroComponent implements OnInit {
 						// this.groupLayerFiltro.add(regionFeatureLayer);
 						//
 						this._geovisorSharedService.mapa?.add(this.regionFeatureLayer);
-
+						this.listProvincia();
 						// this.webmap?.layers.add(regionFeatureLayer);
 
 						// this.provinciaFeatureService.setProvinciaFeature();
@@ -226,10 +232,13 @@ export class FiltroComponent implements OnInit {
 				.then((featureSet) => {
 					// Procesar los resultados de la consulta
 					const features = featureSet.features;
+					console.log('provincias', features[0].attributes);
+
 					this.provincias = features.map((feature) => ({
 						codprov: feature.attributes.CODPROV,
 						nombprov: feature.attributes.NOMBPROV,
 					}));
+					console.log('provincias', this.provincias);
 
 					//this.spinner.hide();
 				})

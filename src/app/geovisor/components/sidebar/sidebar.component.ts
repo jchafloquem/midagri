@@ -18,7 +18,7 @@ import {FiltroComponent} from './components/filtro/filtro.component';
 })
 export class SidebarComponent {
 	public _geovisorSharedService = inject(GeovisorSharedService);
-	public subMenu: 'leyendas' | 'capas' | 'filtros' = 'filtros';
+	public subMenu: 'leyendas' | 'capas' | 'filtros' = 'capas';
 
 	public toogleMenu = true;
 

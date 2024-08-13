@@ -37,7 +37,7 @@
 	}
 }
 .menu__container {
-	left: -272px !important;
+	left: -224px !important;
 	transition: left 0.5s ease;
 	border-radius: 0 8px 8px 0;
 	-webkit-border-radius: 0 8px 8px 0;
@@ -46,7 +46,7 @@
 	-o-border-radius: 0 8px 8px 0;
 }
 .menu__container--open {
-	left: 0px !important;
+	left: 48px !important;
 	transition: left 0.5s ease;
 	-webkit-transition: left 0.5s ease;
 	-moz-transition: left 0.5s ease;

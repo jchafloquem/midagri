@@ -233,7 +233,8 @@ const popuTemplateCobertizos = new PopupTemplate({
 	providedIn: 'root',
 })
 export class GeovisorSharedService {
-	public mapa = new Map({basemap: 'hybrid'});
+	public mapa = new Map({basemap: 'satellite'});
+	// public mapa = new Map({basemap: 'hybrid'});
 	public layerUrls = {
 		baseService: 'https://winlmprap09.midagri.gob.pe/winlmprap14/rest/services/ideMidagri',
 		limits: {
