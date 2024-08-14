@@ -3,12 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 :root {
-	--primary: #233559;
-	--accent: #d32f2f;
-	--secondary: #1d72b8;
-	--default: #f8f8f8;
-	--success: #28c76f;
-	--textPrimary: #1e293b;
+	--primary: #125230;
+	--accent: #2b6cb0;
+	--secondary: #1ca956;
+	--default: #e6f2f8;
+	--success: #078152;
+	--textPrimary: #26292e;
 	--textDefault: #64748b;
 	--mdc-shape-small: 12px;
 	--mdc-shape-medium: 12px;
@@ -48,7 +48,6 @@ body {
 
 .esri-ui-top-right.esri-ui-corner {
 	top: 80px;
-
 }
 .esri-widget {
 	box-sizing: border-box;
@@ -70,10 +69,8 @@ body {
 	border: none;
 	border-radius: 20px;
 	padding: 6px;
-
-
 }
-.esri-component.esri-widget{
+.esri-component.esri-widget {
 	background-color: #1ca956;
 	color: #000;
 }
@@ -85,17 +82,65 @@ body {
 	min-height: 32px;
 	color: #1e293b;
 }
-.esri-component.esri-widget .esri-widget--button{
+.esri-component.esri-widget .esri-widget--button {
 	background-color: #1ca956;
 }
-.esri-component.esri-widget .esri-widget--button.hover{
+.esri-component.esri-widget .esri-widget--button.hover {
 	background-color: #1ca956;
 }
 
-.esri-collapse__icon{
+.esri-collapse__icon {
 	opacity: 1;
 	color: #f8f8f8;
 }
-.button-padding.content--slotted.icon-start-empty.icon-end-empty{
-background-color: #1ca956;
+.button-padding.content--slotted.icon-start-empty.icon-end-empty {
+	background-color: #1ca956;
+}
+
+:root {
+	--mdc-shape-small: 12px;
+	--matformRadius: 8px;
+}
+
+.mdc-text-field--outlined {
+	border-radius: var(--matformRadius) !important;
+	background-color: white;
+	--mdc-outlined-text-field-outline-width: 1px;
+	--mdc-outlined-text-field-focus-outline-width: 2px;
+	--mdc-outlined-text-field-container-shape: var(--matformRadius) !important;
+}
+div.mat-mdc-select-panel {
+	border-top-left-radius: 4px !important;
+	border-top-right-radius: 4px !important;
+	border-bottom-left-radius: var(--matformRadius) !important;
+	border-bottom-right-radius: var(--matformRadius) !important;
+}
+.mat-mdc-form-field-infix {
+	min-height: 40px !important;
+}
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label:not(.mdc-floating-label--float-above) {
+	top: 50% !important;
+}
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-flex.mat-mdc-floating-label .mdc-floating-label--float-above {
+	top: 28px !important;
+}
+
+.mdc-checkbox__background {
+	border-radius: 4px !important;
+}
+
+.mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
+	min-height: 38px !important;
+}
+.mat-form-field.mat-form-field-appearance-outline .mat-form-field-wrapper .mat-form-field-flex {
+	min-height: 38px !important;
+}
+.buttonCustom {
+	height: 44px;
+	width: 44px;
+	color: white !important;
 }

@@ -23,6 +23,7 @@
     "@angular/router": "^18.0.0",
     "@arcgis/core": "^4.30.8",
     "rxjs": "~7.8.0",
+    "tokml": "^0.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },

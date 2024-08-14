@@ -20,7 +20,7 @@ export class SidebarComponent {
 	public _geovisorSharedService = inject(GeovisorSharedService);
 	public subMenu: 'leyendas' | 'capas' | 'filtros' = 'capas';
 
-	public toogleMenu = false;
+	public toogleMenu = true;
 
 	clickToogleMenu(filtro?: 'leyendas' | 'capas' | 'filtros'): void {
 		if (filtro == undefined) {

@@ -1,64 +1,48 @@
-<div
-	class="absolute top-[64px] z-50 h-[calc(100%-64px)] w-[48px] bg-white flex flex-row border"
->
-	<div
-		class="z-50 bg-[#e5e5e5] w-[48px] flex flex-col items-start border-0 border-r border-solid border-gray-300 justify-between"
-	>
+<div class="absolute top-[64px] z-50 h-[calc(100%-64px)] w-[48px] bg-white flex flex-row border">
+	<div class="z-50 bg-[#e5e5e5] w-[48px] flex flex-col items-start border-0 border-r border-solid border-gray-300 justify-between">
 		<div>
 			<button
 				mat-icon-button
 				class=""
-				color="accent"
+				color="primary"
 				[ngClass]="{
 					'text-white bg-secondary rounded-none ': subMenu === 'capas'
 				}"
-				(click)="clickToogleMenu('capas')"
-			>
+				(click)="clickToogleMenu('capas')">
 				<mat-icon class="material-icons-round">layers</mat-icon>
 			</button>
 			<button
 				mat-icon-button
 				class=""
-				color="accent"
+				color="primary"
 				[ngClass]="{
 					'text-white bg-secondary rounded-none ': subMenu === 'leyendas'
 				}"
-				(click)="clickToogleMenu('leyendas')"
-			>
+				(click)="clickToogleMenu('leyendas')">
 				<mat-icon class="material-icons-round">view_list</mat-icon>
 			</button>
 			<button
 				mat-icon-button
 				class=""
-				color="accent"
+				color="primary"
 				[ngClass]="{
 					'text-white bg-secondary rounded-none ': subMenu === 'filtros'
 				}"
-				(click)="clickToogleMenu('filtros')"
-			>
+				(click)="clickToogleMenu('filtros')">
 				<mat-icon class="material-icons-round">filter_alt</mat-icon>
 			</button>
 		</div>
 		<div>
-			<button
-				mat-icon-button
-				class="bg-secondary text-white rounded-none"
-				color="primary"
-				(click)="clickToogleMenu()"
-			>
-				<mat-icon class="material-icons-round">{{
-					this.toogleMenu ? "chevron_left" : "chevron_right"
-				}}</mat-icon>
+			<button mat-icon-button class="bg-secondary text-white rounded-none" color="primary" (click)="clickToogleMenu()">
+				<mat-icon class="material-icons-round">{{ this.toogleMenu ? 'chevron_left' : 'chevron_right' }}</mat-icon>
 			</button>
 		</div>
 	</div>
 	<div
 		class="z-40 h-[calc(100%-64px)] min-h-full bg-white w-[272px] menu__container top-0 absolute left-[48px] shadow-lg"
-		[ngClass]="{ 'menu__container--open': toogleMenu }"
-	>
+		[ngClass]="{'menu__container--open': toogleMenu}">
 		<div
-			class="bg-[#1ca956] h-[48px] w-full text-left text-base text-white font-medium flex flex-row justify-start items-center border-0 border-b-4 border-solid border-accent pl-2"
-		>
+			class="bg-[#1ca956] h-[48px] w-full text-left text-base text-white font-medium flex flex-row justify-start items-center border-0 border-b-4 border-solid border-accent pl-2">
 			<span>
 				{{ subMenu | uppercase }}
 			</span>
@@ -70,10 +54,8 @@
 			} @if (subMenu==='leyendas') {
 			<app-leyenda class="h-full"></app-leyenda>
 
-			} @if (subMenu==='filtros') {
-			<app-filtro class="h-full"></app-filtro>
-
 			}
+			<app-filtro class="h-full" [ngClass]="{hidden: subMenu !== 'filtros'}"></app-filtro>
 		</div>
 	</div>
 </div>

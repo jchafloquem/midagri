@@ -9,6 +9,8 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Color from '@arcgis/core/Color';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 interface region {
 	coddep: string;
@@ -19,13 +21,13 @@ interface provincia {
 	nombprov: string;
 }
 interface distrito {
-	coddep: string;
-	nombdep: string;
+	coddist: string;
+	nombdist: string;
 }
 @Component({
 	selector: 'app-filtro',
 	standalone: true,
-	imports: [CommonModule, MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule],
+	imports: [CommonModule, MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatIconModule, MatButtonModule],
 	templateUrl: './filtro.component.html',
 	styleUrl: './filtro.component.scss',
 })
@@ -34,32 +36,41 @@ export class FiltroComponent implements OnInit {
 
 	public regiones: region[] = [];
 	public provincias: provincia[] = [];
-	public distritos: region[] = [];
+	public distritos: distrito[] = [];
 
 	public region = new FormControl<region | null>(null, [Validators.required]);
 	public provincia = new FormControl<provincia | null>(null, [Validators.required]);
-	public distrito = new FormControl<region | null>(null, [Validators.required]);
+	public distrito = new FormControl<distrito | null>(null, [Validators.required]);
 	public regionFeatureLayer!: any;
-	public darkBackgroundLayer!: any;
+	public provinciaFeatureLayer!: any;
+	public distritoFeatureLayer!: any;
+	public regionDarkBackLayer!: any;
+	public provinciaDarkBackLayer!: any;
+	public distritoDarkBackLayer!: any;
 	public groupLayerFiltro = new GroupLayer({
 		id: 'groupLayerFiltro',
 		title: 'Filtros',
 		visibilityMode: 'independent',
 		visible: true,
 	});
-	public coddep?: string;
 	ngOnInit(): void {
 		this._geovisorSharedService.mapa?.add(this.groupLayerFiltro);
 		this.listRegion();
 	}
-	regionChange(): void {
-		console.log(' =>', this.region.value);
-		this.getRegion();
+	limpiarlayers(): void {
+		this._geovisorSharedService.removeLayerFromGroup('groupLayerFiltro', 'regionSeleccionada');
+		this._geovisorSharedService.removeLayerFromGroup('groupLayerFiltro', 'provinciaSeleccionada');
+		this._geovisorSharedService.removeLayerFromGroup('groupLayerFiltro', 'distritoSeleccionada');
+		this._geovisorSharedService.mapa.remove(this.regionFeatureLayer);
+		this._geovisorSharedService.mapa.remove(this.regionDarkBackLayer);
+		this._geovisorSharedService.mapa.remove(this.provinciaFeatureLayer);
+		this._geovisorSharedService.mapa.remove(this.provinciaDarkBackLayer);
+		this._geovisorSharedService.mapa.remove(this.distritoFeatureLayer);
+		this._geovisorSharedService.mapa.remove(this.distritoDarkBackLayer);
 	}
-	fondoDarkBlack(): void {
-		this._geovisorSharedService.mapa.remove(this.darkBackgroundLayer);
-		this.darkBackgroundLayer = new FeatureLayer({
-			url: `https://winlmprap09.midagri.gob.pe/winlmprap14/rest/services/ideMidagri/Limites_Censales/MapServer/0`,
+	regionDarkBlack(): void {
+		this.regionDarkBackLayer = new FeatureLayer({
+			url: `${this._geovisorSharedService.layerUrls.baseService}/${this._geovisorSharedService.layerUrls.limits.departamentos}`,
 			renderer: new SimpleRenderer({
 				symbol: new SimpleFillSymbol({
 					color: new Color([0, 0, 0, 0.5]), // Color de fondo oscuro
@@ -72,123 +83,54 @@ export class FiltroComponent implements OnInit {
 			definitionExpression: `CODDEP <> '${this.region.value?.coddep}'`, // Mostrar todas las regiones como fondo oscuro
 			blendMode: 'multiply', // Mezclar para oscurecer todo excepto la capa seleccionada
 			legendEnabled: false,
+			minScale: 0, // Visible en todas las escalas
+			maxScale: 0, // Visible en todas las escalas
 		});
 
-		this._geovisorSharedService.mapa?.add(this.darkBackgroundLayer);
+		this._geovisorSharedService.mapa?.add(this.regionDarkBackLayer);
 	}
-	getRegion(): void {
-		//this.spinner.show();
+	provinciaDarkBlack(): void {
+		this.provinciaDarkBackLayer = new FeatureLayer({
+			url: `${this._geovisorSharedService.layerUrls.baseService}/${this._geovisorSharedService.layerUrls.limits.provincias}`,
+			renderer: new SimpleRenderer({
+				symbol: new SimpleFillSymbol({
+					color: new Color([0, 0, 0, 0.5]), // Color de fondo oscuro
+					outline: {
+						width: 0, // Sin borde para el fondo oscuro
+						color: new Color([0, 0, 0, 0]),
+					},
+				}),
+			}),
+			definitionExpression: `CODDEP='${this.region.value?.coddep}' AND CODPROV <> '${this.provincia.value?.codprov}'`, // Mostrar todas las regiones como fondo oscuro
+			blendMode: 'multiply', // Mezclar para oscurecer todo excepto la capa seleccionada
+			legendEnabled: false,
+			minScale: 0, // Visible en todas las escalas
+			maxScale: 0, // Visible en todas las escalas
+		});
 
-		this._geovisorSharedService.removeLayerFromGroup('groupLayerFiltro', 'regionSeleccionada');
-		this._geovisorSharedService.mapa.remove(this.regionFeatureLayer);
-		this.fondoDarkBlack();
-		const regionFeature = this._geovisorSharedService.getRegionFeature();
-
-		if (regionFeature) {
-			//Definir la consulta para obtener los registros deseados
-			const query = regionFeature.createQuery();
-			query.where = `CODDEP='${this.region.value?.coddep}'`;
-
-			query.outFields = ['CODDEP', 'NOMBDEP']; // Campos que deseas obtener
-
-			// Ejecutar la consulta para obtener los features
-			regionFeature
-				.queryFeatures(query)
-				.then((featureSet) => {
-					if (featureSet.features.length === 1) {
-						// Obtener la geometría del primer resultado (asumiendo que solo hay uno)
-						const geometry = featureSet.features[0].geometry;
-						// Realizar el zoom o navegación a la geometría
-						this._geovisorSharedService.view?.goTo(geometry.extent);
-						//
-						const whereClause = `CODDEP='${this.region.value?.coddep}'`;
-						// Crear una nueva capa con el feature
-						this.regionFeatureLayer = new FeatureLayer({
-							id: 'regionSeleccionada',
-							url: `https://winlmprap09.midagri.gob.pe/winlmprap14/rest/services/ideMidagri/Limites_Censales/MapServer/0`, // Usar el feature como fuente de la capa
-							title: 'Límites Censales - Región',
-							renderer: new SimpleRenderer({
-								symbol: new SimpleFillSymbol({
-									color: new Color([28, 169, 86, 0.1]),
-									outline: {
-										width: 3,
-										color: new Color([28, 169, 86, 1]),
-									},
-								}),
-							}),
-							definitionExpression: whereClause,
-							blendMode: 'source-atop',
-							legendEnabled: false,
-						});
-
-						// Agregar la nueva capa al mapa
-						// const groupLayerFiltro = new GroupLayer({
-						// 	title: 'ODNGRD',
-						// 	visibilityMode: 'independent',
-						// 	visible:false,
-						// 	layers: [
-						// 		this.layerFeatureService.featureLayer('ODNGRD','Elementos_Expuestos'),
-						// 		this.layerFeatureService.featureLayer('ODNGRD','Escenario déficit hídrico'),
-						// 	]
-						// });
-						// this.groupLayerFiltro.add(regionFeatureLayer);
-						// darkBackgroundLayer.load().then(() => {
-
-						// });
-						// this.groupLayerFiltro.add(regionFeatureLayer);
-						//
-						this._geovisorSharedService.mapa?.add(this.regionFeatureLayer);
-						this.listProvincia();
-						// this.webmap?.layers.add(regionFeatureLayer);
-
-						// this.provinciaFeatureService.setProvinciaFeature();
-						// const provinciaFeature = this.provinciaFeatureService?.getProvinciaFeature();
-
-						// if (provinciaFeature) {
-						// 	//Definir la consulta para obtener los registros deseados
-						// 	const query = provinciaFeature.createQuery();
-						// 	query.where = `CODDEP='${this.coddep}'`;
-						// 	query.outFields = ['CODDEP', 'CODPROV', 'NOMBPROV']; // Campos que deseas obtener
-
-						// 	provinciaFeature.queryFeatures(query).then((featureSet) => {
-						// 		const features = featureSet.features;
-						// 		this.provincias = features.map((feature) => ({
-						// 			codprov: feature.attributes.CODPROV,
-						// 			nombprov: feature.attributes.NOMBPROV,
-						// 		}));
-
-						// 		const whereClause = `CODDEP='${this.coddep}'`;
-						// 		// Crear una nueva capa con el feature
-						// 		const provinciaFeatureLayer = new FeatureLayer({
-						// 			id: 'provinciaSeleccionada',
-						// 			url: this.provinciaService.urlGis(), // Usar el feature como fuente de la capa
-						// 			title: 'Límites Censales - Provincia',
-						// 			renderer: new SimpleRenderer({
-						// 				symbol: new SimpleFillSymbol({
-						// 					color: new Color([255, 165, 0, 0.1]),
-						// 					outline: new SimpleLineSymbol({
-						// 						width: 2,
-						// 						color: new Color([255, 165, 0]),
-						// 					}),
-						// 				}),
-						// 			}),
-						// 			definitionExpression: whereClause,
-						// 		});
-						// 		// Agregar la nueva capa al mapa
-						// 		this.groupLayerFiltro.add(provinciaFeatureLayer);
-						// 		//this.webmap?.layers.add(provinciaFeatureLayer);
-						// 	});
-						// }
-					} else {
-						console.warn('No se encontraron resultados para la consulta.');
-					}
-				})
-				.catch((error) => {
-					console.error('Error al cargar la capa de regiones:', error);
-				});
-		}
+		this._geovisorSharedService.mapa?.add(this.provinciaDarkBackLayer);
 	}
+	distritoDarkBlack(): void {
+		this.distritoDarkBackLayer = new FeatureLayer({
+			url: `${this._geovisorSharedService.layerUrls.baseService}/${this._geovisorSharedService.layerUrls.limits.distritos}`,
+			renderer: new SimpleRenderer({
+				symbol: new SimpleFillSymbol({
+					color: new Color([0, 0, 0, 0.5]), // Color de fondo oscuro
+					outline: {
+						width: 0, // Sin borde para el fondo oscuro
+						color: new Color([0, 0, 0, 0]),
+					},
+				}),
+			}),
+			definitionExpression: `CODDEP='${this.region.value?.coddep}' AND CODPROV='${this.provincia.value?.codprov}' AND CODDIST <> '${this.distrito.value?.coddist}'`, // Mostrar todas las regiones como fondo oscuro
+			blendMode: 'multiply', // Mezclar para oscurecer todo excepto la capa seleccionada
+			legendEnabled: false,
+			minScale: 0, // Visible en todas las escalas
+			maxScale: 0, // Visible en todas las escalas
+		});
 
+		this._geovisorSharedService.mapa?.add(this.distritoDarkBackLayer);
+	}
 	listRegion(): void {
 		//this.spinner.show();
 		const regionFeature = this._geovisorSharedService.getRegionFeature();
@@ -224,7 +166,7 @@ export class FiltroComponent implements OnInit {
 			//Definir la consulta para obtener los registros deseados
 			const query = provinciaFeature.createQuery();
 			query.where = `CODDEP='${this.region.value?.coddep}'`;
-			query.outFields = ['CODDEP', 'NOMBDEP']; // Campos que deseas obtener
+			query.outFields = ['CODDEP', 'CODPROV', 'NOMBPROV']; // Campos que deseas obtener
 
 			// Ejecutar la consulta para obtener los features
 			provinciaFeature
@@ -244,6 +186,192 @@ export class FiltroComponent implements OnInit {
 				})
 				.catch((error) => {
 					console.error('Error loading provincia layer:', error);
+				});
+		}
+	}
+	listDistrito(): void {
+		//this.spinner.show();
+		const distritoFeature = this._geovisorSharedService.getDistritosFeature();
+		if (distritoFeature) {
+			//Definir la consulta para obtener los registros deseados
+			const query = distritoFeature.createQuery();
+			query.where = `CODDEP='${this.region.value?.coddep}' AND CODPROV='${this.provincia.value?.codprov}'`;
+			query.outFields = ['CODDEP', 'CODPROV', 'CODDIST', 'NOMBDIST']; // Campos que deseas obtener
+
+			// Ejecutar la consulta para obtener los features
+			distritoFeature
+				.queryFeatures(query)
+				.then((featureSet) => {
+					// Procesar los resultados de la consulta
+					const features = featureSet.features;
+					console.log('provincias', features[0].attributes);
+
+					this.distritos = features.map((feature) => ({
+						coddist: feature.attributes.CODDIST,
+						nombdist: feature.attributes.NOMBDIST,
+					}));
+					console.log('provincias', this.provincias);
+
+					//this.spinner.hide();
+				})
+				.catch((error) => {
+					console.error('Error loading provincia layer:', error);
+				});
+		}
+	}
+	regionChange(): void {
+		//this.spinner.show();
+		this.limpiarlayers();
+
+		this.regionDarkBlack();
+		const regionFeature = this._geovisorSharedService.getRegionFeature();
+
+		if (regionFeature) {
+			//Definir la consulta para obtener los registros deseados
+			const query = regionFeature.createQuery();
+			query.where = `CODDEP='${this.region.value?.coddep}'`;
+
+			query.outFields = ['CODDEP', 'NOMBDEP']; // Campos que deseas obtener
+
+			// Ejecutar la consulta para obtener los features
+			regionFeature
+				.queryFeatures(query)
+				.then((featureSet) => {
+					if (featureSet.features.length === 1) {
+						// Obtener la geometría del primer resultado (asumiendo que solo hay uno)
+						const geometry = featureSet.features[0].geometry;
+						// Realizar el zoom o navegación a la geometría
+						this._geovisorSharedService.view?.goTo(geometry.extent);
+						//
+						const whereClause = `CODDEP='${this.region.value?.coddep}'`;
+						// Crear una nueva capa con el feature
+						this.regionFeatureLayer = new FeatureLayer({
+							id: 'regionSeleccionada',
+							url: `${this._geovisorSharedService.layerUrls.baseService}/${this._geovisorSharedService.layerUrls.limits.departamentos}`, // Usar el feature como fuente de la capa
+							title: 'Límites Censales - Región',
+							renderer: new SimpleRenderer({
+								symbol: new SimpleFillSymbol({
+									color: new Color([28, 169, 86, 0.1]),
+									outline: {
+										width: 3,
+										color: new Color([28, 169, 86, 1]),
+									},
+								}),
+							}),
+							definitionExpression: whereClause,
+							blendMode: 'source-atop',
+							legendEnabled: false,
+							minScale: 0, // Visible en todas las escalas
+							maxScale: 0, // Visible en todas las escalas
+						});
+						this._geovisorSharedService.mapa?.add(this.regionFeatureLayer);
+						this.listProvincia();
+					} else {
+						console.warn('No se encontraron resultados para la consulta.');
+					}
+				})
+				.catch((error) => {
+					console.error('Error al cargar la capa de regiones:', error);
+				});
+		}
+	}
+	provinciaChange(): void {
+		this.limpiarlayers();
+		this.regionDarkBlack();
+		this.provinciaDarkBlack();
+		const provinciaFeature = this._geovisorSharedService.getProvinciaFeature();
+
+		if (provinciaFeature) {
+			//Definir la consulta para obtener los registros deseados
+			const query = provinciaFeature.createQuery();
+			query.where = `CODDEP='${this.region.value?.coddep}' AND CODPROV='${this.provincia.value?.codprov}'`;
+			query.outFields = ['CODDEP', 'CODPROV', 'NOMBPROV']; // Campos que deseas obtener
+			// Ejecutar la consulta para obtener los features
+			provinciaFeature
+				.queryFeatures(query)
+				.then((featureSet) => {
+					if (featureSet.features.length === 1) {
+						// Obtener la geometría del primer resultado (asumiendo que solo hay uno)
+						const geometry = featureSet.features[0].geometry; // Realizar el zoom o navegación a la geometría
+						this._geovisorSharedService.view?.goTo(geometry.extent);
+						const whereClause = `CODDEP='${this.region.value?.coddep}' AND CODPROV='${this.provincia.value?.codprov}'`; // Crear una nueva capa con el feature
+						this.provinciaFeatureLayer = new FeatureLayer({
+							id: 'provinciaSeleccionada',
+							url: `${this._geovisorSharedService.layerUrls.baseService}/${this._geovisorSharedService.layerUrls.limits.provincias}`, // Usar el feature como fuente de la capa
+							title: 'Límites Censales - Región',
+							renderer: new SimpleRenderer({
+								symbol: new SimpleFillSymbol({
+									color: new Color([28, 169, 86, 0.1]),
+									outline: {
+										width: 3,
+										color: new Color([28, 169, 86, 1]),
+									},
+								}),
+							}),
+							definitionExpression: whereClause,
+							blendMode: 'source-atop',
+							legendEnabled: false,
+							minScale: 0, // Visible en todas las escalas
+							maxScale: 0, // Visible en todas las escalas
+						});
+						this._geovisorSharedService.mapa?.add(this.provinciaFeatureLayer);
+						this.listDistrito();
+					} else {
+						console.warn('No se encontraron resultados para la consulta.');
+					}
+				})
+				.catch((error) => {
+					console.error('Error al cargar la capa de regiones:', error);
+				});
+		}
+	}
+	distritoChange(): void {
+		this.limpiarlayers();
+		this.regionDarkBlack();
+		this.provinciaDarkBlack();
+		this.distritoDarkBlack();
+		const distritoFeature = this._geovisorSharedService.getDistritosFeature();
+		if (distritoFeature) {
+			//Definir la consulta para obtener los registros deseados
+			const query = distritoFeature.createQuery();
+			query.where = `CODDEP='${this.region.value?.coddep}' AND CODPROV='${this.provincia.value?.codprov}' AND CODDIST='${this.distrito.value?.coddist}'`;
+			query.outFields = ['CODDEP', 'CODPROV', 'CODDIST', 'NOMBDIST']; // Campos que deseas obtener
+			distritoFeature
+				.queryFeatures(query)
+				.then((featureSet) => {
+					if (featureSet.features.length === 1) {
+						// Obtener la geometría del primer resultado (asumiendo que solo hay uno)
+						const geometry = featureSet.features[0].geometry;
+						// Realizar el zoom o navegación a la geometría
+						this._geovisorSharedService.view?.goTo(geometry.extent);
+						const whereClause = `CODDEP='${this.region.value?.coddep}' AND CODPROV='${this.provincia.value?.codprov}' AND CODDIST='${this.distrito.value?.coddist}'`;
+						// Crear una nueva capa con el feature
+						this.distritoFeatureLayer = new FeatureLayer({
+							id: 'distritoSeleccionada',
+							url: `${this._geovisorSharedService.layerUrls.baseService}/${this._geovisorSharedService.layerUrls.limits.distritos}`, // Usar el feature como fuente de la capa
+							title: 'Límites Censales - Región',
+							renderer: new SimpleRenderer({
+								symbol: new SimpleFillSymbol({
+									color: new Color([28, 169, 86, 0.1]),
+									outline: {
+										width: 3,
+										color: new Color([28, 169, 86, 1]),
+									},
+								}),
+							}),
+							definitionExpression: whereClause,
+							blendMode: 'source-atop',
+							legendEnabled: false,
+							minScale: 0, // Visible en todas las escalas
+							maxScale: 0, // Visible en todas las escalas
+						});
+						this._geovisorSharedService.mapa?.add(this.distritoFeatureLayer);
+					} else {
+						console.warn('No se encontraron resultados para la consulta.');
+					}
+				})
+				.catch((error) => {
+					console.error('Error al cargar la capa de regiones:', error);
 				});
 		}
 	}

@@ -1,16 +1,16 @@
 @use '@angular/material' as mat;
 @include mat.core();
 $my-primary-color: (
-	50: #fef2f2,
-	100: #ffe2e1,
-	200: #ffc9c8,
-	300: #ffa4a2,
-	400: #fd706c,
-	500: #f6423d,
-	600: #e2211c,
-	700: #bf1a16,
-	800: #9e1916,
-	900: #831c19,
+	50: #f0fdf5,
+	100: #dbfde9,
+	200: #baf8d4,
+	300: #84f1b3,
+	400: #47e18a,
+	500: #1ec969,
+	600: #13a654,
+	700: #138244,
+	800: #14673a,
+	900: #125230,
 	contrast: (
 		50: #000000,
 		100: #000000,
@@ -25,16 +25,16 @@ $my-primary-color: (
 	),
 );
 $my-accent-color: (
-	50: #f6f6f6,
-	100: #e7e7e7,
-	200: #d1d1d1,
-	300: #b0b0b0,
-	400: #888888,
-	500: #6d6d6d,
-	600: #5d5d5d,
-	700: #4f4f4f,
-	800: #454545,
-	900: #333333,
+	50: #f3f6fc,
+	100: #e6eef8,
+	200: #c7dbf0,
+	300: #95bce4,
+	400: #5d9bd3,
+	500: #387ebf,
+	600: #2b6cb0,
+	700: #214f83,
+	800: #1f456d,
+	900: #1f3b5b,
 	contrast: (
 		50: #000000,
 		100: #000000,
@@ -50,9 +50,9 @@ $my-accent-color: (
 );
 
 //* paleta de colores
-$my-palette-primary: mat.m2-define-palette($my-primary-color, 600);
+$my-palette-primary: mat.m2-define-palette($my-primary-color, 900);
 //
-$my-palette-accent: mat.m2-define-palette($my-accent-color, 900);
+$my-palette-accent: mat.m2-define-palette($my-accent-color, 600);
 // my-palette-warn: mat.define-palette($my-warn-color, 300);
 // * font
 
