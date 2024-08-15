@@ -28,7 +28,8 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer.js';
 import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 import tokml from 'tokml';
-
+import shpwrite from '@mapbox/shp-write';
+import {saveAs} from 'file-saver';
 //Personalizacion de la capa Departamentos
 const fillSymbolDepartamento = new SimpleFillSymbol({
 	color: new Color([255, 255, 255, 0]), // Color rojo con 50% de opacidad
@@ -752,7 +753,7 @@ export class GeovisorSharedService {
 		const customButton = document.createElement('button');
 		customButton.classList.add('esri-component', 'esri-expand', 'esri-widget', 'buttonCustom');
 		customButton.innerHTML = '<span class="esri-icon esri-icon-download"></span>';
-		customButton.title = 'Custom Button';
+		customButton.title = 'kml';
 
 		view.ui.add(customButton, {
 			position: 'top-right',
@@ -761,7 +762,27 @@ export class GeovisorSharedService {
 		customButton.addEventListener('click', () => {
 			// Acción personalizada al hacer clic en el botón
 			if (this.drawnPolygon) {
-				this.downloadData(this.drawnPolygon);
+				this.downloadData(this.drawnPolygon, 'kml');
+			} else {
+				alert('Please draw a polygon first.');
+			}
+
+			// Aquí puedes llamar a funciones personalizadas o realizar cualquier acción
+		});
+
+		const shapefile = document.createElement('button');
+		shapefile.classList.add('esri-component', 'esri-expand', 'esri-widget', 'buttonCustom');
+		shapefile.innerHTML = '<span class="esri-icon esri-icon-download"></span>';
+		shapefile.title = 'shapefile';
+
+		view.ui.add(shapefile, {
+			position: 'top-right',
+			index: 8, // Posición en la UI
+		});
+		shapefile.addEventListener('click', () => {
+			// Acción personalizada al hacer clic en el botón
+			if (this.drawnPolygon) {
+				this.downloadData(this.drawnPolygon, 'shapefile');
 			} else {
 				alert('Please draw a polygon first.');
 			}
@@ -952,7 +973,7 @@ export class GeovisorSharedService {
 			}
 		}
 	}
-	downloadData(polygon: any): void {
+	downloadData(polygon: any, format: string): void {
 		const featureLayer = new FeatureLayer({
 			url: `${this.layerUrls.ppa}`,
 		});
@@ -1011,7 +1032,12 @@ export class GeovisorSharedService {
 
 					// Convertir GeoJSON a KML usando tokml
 					if (geojson.features[0]?.geometry.coordinates[0] !== null) {
-						this.generarArchivo(geojson);
+						if (format === 'shapefile') {
+							this.generarArchivoShapefile(geojson);
+						}
+						if (format === 'kml') {
+							this.generarArchivoKml(geojson);
+						}
 					}
 				});
 			} catch (error) {
@@ -1019,7 +1045,7 @@ export class GeovisorSharedService {
 			}
 		});
 	}
-	generarArchivo(geojson: any): void {
+	generarArchivoKml(geojson: any): void {
 		const kmlString = tokml(geojson);
 
 		// Crear el archivo de descarga
@@ -1032,5 +1058,10 @@ export class GeovisorSharedService {
 		a.click();
 		document.body.removeChild(a);
 		URL.revokeObjectURL(url);
+	}
+	generarArchivoShapefile(geojson: any): void {
+		shpwrite.zip(geojson, {outputType: 'blob', compression: 'DEFLATE'}).then((zipBlob) => {
+			saveAs(zipBlob, 'my_shapefile.zip');
+		});
 	}
 }
