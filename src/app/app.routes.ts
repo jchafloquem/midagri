@@ -1,6 +1,35 @@
-import {Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+	{
+		path: 'auth',
+		loadComponent: () => import('./auth/auth.component'),
+		children: [
+			{
+				path: 'welcome',
+				loadComponent: () => import('./auth/pages/welcome/welcome.component'),
+			},
+			{
+				path: 'login',
+				loadComponent: () => import('./auth/pages/login/login.component'),
+			},
+			{
+				path: 'register',
+				loadComponent: () => import('./auth/pages/register/register.component'),
+			},
+			{
+				path: 'error',
+				loadComponent: () => import('./auth/pages/error404/error404.component'),
+			},
+			{
+				path: '',
+				redirectTo: 'welcome',
+				pathMatch: 'full',
+			},
+
+		],
+	},
+
 	{
 		path: 'geovisor',
 		loadComponent: () => import('./geovisor/geovisor.component'),
@@ -10,24 +39,20 @@ export const routes: Routes = [
 				loadComponent: () => import('./geovisor/pages/map/map.component'),
 			},
 			{
-				path: 'error404',
-				loadComponent: () => import('./geovisor/pages/error404/error404.component'),
-			},
-			{
 				path: '',
 				redirectTo: 'map',
-				pathMatch: 'full',
-			},
-			{
-				path: '**',
-				redirectTo: 'error404',
 				pathMatch: 'full',
 			},
 		],
 	},
 	{
+		path: '',
+		redirectTo: 'auth',
+		pathMatch: 'full',
+	},
+	{
 		path: '**',
-		redirectTo: 'geovisor',
+		redirectTo: 'auth/error',
 		pathMatch: 'full',
 	},
 ];

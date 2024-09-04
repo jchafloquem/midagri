@@ -1,12 +1,18 @@
 import {ElementRef, Injectable} from '@angular/core';
 //Libreria de ArcGIS 4.30
+import {LayerConfig} from '../interface/layerConfig';
+import {saveAs} from 'file-saver';
 import * as projection from '@arcgis/core/geometry/projection';
+import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 import AreaMeasurement2D from '@arcgis/core/widgets/AreaMeasurement2D.js';
 import BasemapGallery from '@arcgis/core/widgets/BasemapGallery.js';
+import Color from '@arcgis/core/Color';
 import CoordinateConversion from '@arcgis/core/widgets/CoordinateConversion.js';
 import DistanceMeasurement2D from '@arcgis/core/widgets/DistanceMeasurement2D.js';
 import Expand from '@arcgis/core/widgets/Expand.js';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer.js';
+import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer.js';
+import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Home from '@arcgis/core/widgets/Home.js';
 import LabelClass from '@arcgis/core/layers/support/LabelClass.js';
 import LayerList from '@arcgis/core/widgets/LayerList.js';
@@ -16,20 +22,14 @@ import MapView from '@arcgis/core/views/MapView.js';
 import Point from '@arcgis/core/geometry/Point';
 import PopupTemplate from '@arcgis/core/PopupTemplate.js';
 import Print from '@arcgis/core/widgets/Print.js';
+import shpwrite from '@mapbox/shp-write';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
-import Zoom from '@arcgis/core/widgets/Zoom.js';
-import {LayerConfig} from '../interface/layerConfig';
-import Color from '@arcgis/core/Color';
 import Sketch from '@arcgis/core/widgets/Sketch.js';
-import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer.js';
-import GroupLayer from '@arcgis/core/layers/GroupLayer';
-import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import tokml from 'tokml';
-import shpwrite from '@mapbox/shp-write';
-import {saveAs} from 'file-saver';
+import Zoom from '@arcgis/core/widgets/Zoom.js';
 //Personalizacion de la capa Departamentos
 const fillSymbolDepartamento = new SimpleFillSymbol({
 	color: new Color([255, 255, 255, 0]), // Color rojo con 50% de opacidad
@@ -836,6 +836,9 @@ export class GeovisorSharedService {
 		});
 		return this.view.when();
 	}
+
+
+
 	capa(): void {
 		this.controlCapas = new LayerList({
 			view: this.view,
